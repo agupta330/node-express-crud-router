@@ -28,7 +28,7 @@
 			//logger.debug("Test server listening on port " + port);
 
 			request.put(baseUrl, function (err, res, result) {
-
+				logger.debug(err);
 				expect(err).not.to.be.ok();
 				expect(res.statusCode).to.be(200);
 				done();
