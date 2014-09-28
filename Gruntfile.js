@@ -27,7 +27,7 @@ module.exports = function (grunt) {
 			}
 		},
 		mochacli: {
-			all: ['test/*.js']
+			all: ['test/*-test.js']
 		},
 		watch: {
 			gruntfile: {

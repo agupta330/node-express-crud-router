@@ -45,6 +45,7 @@
     "moment": "^2.8.3",
     "mongoose": "^3.8.16",
     "nodemon": "^1.2.1",
+    "request": "^2.44.0",
     "serve-static": "^1.6.2",
     "string": "^2.1.0",
     "underscore": "^1.7.0"
