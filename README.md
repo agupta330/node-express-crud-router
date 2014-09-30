@@ -1,44 +1,71 @@
-#  [![Build Status](https://secure.travis-ci.org//booking.png?branch=master)](http://travis-ci.org//booking)
-
 > The best module ever.
 
 
-## Getting Started
+## Install
 
-Install the module with: `npm install booking`
+npm: Install the module with: `express-mongodb-crud`
+
+## Getting started
+
+First you have to install node.js and mongodb. After adding the router
+to express you can use a new default rest based api:
+
+### REST API
+
+* http://yourServer:port/YourModel[?skip=&lt;int&gt;&limit=&lt;int&gt;]
+ * GET --> Get list of available models
+   * skip param skips <int> models from the top of the result list
+   * skip default is 0
+   * limit param limits <int> models from the bottom of the result list
+   * limit default is 25
+   * Returns an array of available models
+ * PUT --> Create new model
+   * Returns the created model
+ * POST --> Search with criterias
+   * HTTP BODY: {<mongoose search criteria>}
+   * Returns the matching models
+
+* http://yourServer:port/YourModel/<model-id>
+ * GET --> Get the referenced model
+ * DELETE --> Delete the referenced model
+ * POST --> Update the referenced model
+ * PUT --> Update the referenced model
+
+## Usage
 
 ```js
-var booking = require('booking');
-booking.awesome(); // "awesome"
+
+var express = require('express');
+var mongoose = require('mongoose');
+
+var app = express();
+var Schema = mongoose.Schema;
+var MySchema = new Schema({
+  name: "string",
+  desc: "string",
+});
+
+var MyModel = mongoose.model("MyModel", MySchema);
+var MyRouter = require('express-mongodb-crud');
+app.use("/MyModel", new MyRouter({
+  model: MyModel
+}));
+
+app.listen(3000, function () {
+  done();
+});
+
 ```
 
-Install with cli command
-
-```sh
-$ npm install -g booking
-$ booking --help
-$ booking --version
-```
-
-
-
-
-## Documentation
-
-_(Coming soon)_
-
-
-## Examples
-
-_(Coming soon)_
-
+After starting the server the rest interface will be available.
 
 ## Contributing
 
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com).
+* Dennis Ahaus
+* New contributors are welcome
 
 
 ## License
 
-Copyright (c) 2014   
+Copyright (c) 2014
 Licensed under the MIT license.
