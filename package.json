@@ -1,25 +1,29 @@
 {
 	"name": "express-mongodb-crud",
 	"version": "0.0.1",
-	"main": "lib/booking.js",
-	"description": "The best module ever.",
-	"homepage": "user/repo",
-	"bugs": "user/repo/issues",
+	"main": "lib/router.js",
+	"description": "An express-mongodb-CRUD (create-read-update-delete) generic router",
+	"homepage": "http://github.io/express-mongodb-crud",
+	"bugs": "http://github.io/express-mongodb-crud/issues",
 	"author": {
-		"name": "",
-		"email": ""
+		"name": "Dennis Ahaus",
+		"email": "dennis.ahaus@gmail.com"
 	},
 	"repository": {
 		"type": "git",
-		"url": "user/repo"
+		"url": "https://github.com/DennisAhaus/express-mongodb-crud.git"
 	},
 	"license": "MIT",
 	"files": [
     "lib"
   ],
 	"keywords": [
-    "booking",
-    ""
+    "express",
+    "CRUD",
+		"router",
+		"controller",
+		"mongo",
+		"mongodb"
   ],
 	"devDependencies": {
 		"expect.js": "^0.3.1",
@@ -32,22 +36,15 @@
 		"time-grunt": "^0.3.1"
 	},
 	"scripts": {
-		"test": "grunt"
+		"test": "grunt test"
 	},
-	"bin": {
-		"booking": "cli.js"
-	},
-	"preferGlobal": "true",
+	"preferGlobal": "false",
 	"dependencies": {
 		"body-parser": "^1.8.4",
 		"express": "^4.9.4",
 		"log4js": "^0.6.21",
 		"moment": "^2.8.3",
 		"mongoose": "^3.8.16",
-		"nodemon": "^1.2.1",
 		"request": "^2.44.0",
-		"serve-static": "^1.6.2",
-		"string": "^2.1.0",
-		"underscore": "^1.7.0"
 	}
 }

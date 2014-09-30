@@ -38,7 +38,7 @@
 
 		var url = baseUrl;
 		var search = {
-			"name": testModelData.desc
+			"desc": testModelData.desc
 		}
 
 		request.post(url, function (err, res, result) {
@@ -153,7 +153,7 @@
 
 		});
 
-		it('find - with skip=2', function (done) {
+		it('find - with skip', function (done) {
 
 			var url = baseUrl;
 
@@ -169,7 +169,7 @@
 					expect(res.statusCode).to.be(200);
 
 					var len = result.length;
-					expect(len).to.be.above(2);
+					expect(len).to.be.above(1);
 
 					request.get(url, function (err, res, result) {
 
