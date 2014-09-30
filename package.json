@@ -1,53 +1,53 @@
 {
-  "name": "booking",
-  "version": "0.0.0",
-  "main": "lib/booking.js",
-  "description": "The best module ever.",
-  "homepage": "user/repo",
-  "bugs": "user/repo/issues",
-  "author": {
-    "name": "",
-    "email": ""
-  },
-  "repository": {
-    "type": "git",
-    "url": "user/repo"
-  },
-  "license": "MIT",
-  "files": [
+	"name": "express-mongodb-crud",
+	"version": "0.0.1",
+	"main": "lib/booking.js",
+	"description": "The best module ever.",
+	"homepage": "user/repo",
+	"bugs": "user/repo/issues",
+	"author": {
+		"name": "",
+		"email": ""
+	},
+	"repository": {
+		"type": "git",
+		"url": "user/repo"
+	},
+	"license": "MIT",
+	"files": [
     "lib"
   ],
-  "keywords": [
+	"keywords": [
     "booking",
     ""
   ],
-  "devDependencies": {
-    "expect.js": "^0.3.1",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-nodeunit": "^0.3.3",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-mocha-cli": "^1.9.0",
-    "jshint-stylish": "^0.2.0",
-    "load-grunt-tasks": "^0.4.0",
-    "time-grunt": "^0.3.1"
-  },
-  "scripts": {
-    "test": "grunt"
-  },
-  "bin": {
-    "booking": "cli.js"
-  },
-  "preferGlobal": "true",
-  "dependencies": {
-    "body-parser": "^1.8.4",
-    "express": "^4.9.4",
-    "log4js": "^0.6.21",
-    "moment": "^2.8.3",
-    "mongoose": "^3.8.16",
-    "nodemon": "^1.2.1",
-    "request": "^2.44.0",
-    "serve-static": "^1.6.2",
-    "string": "^2.1.0",
-    "underscore": "^1.7.0"
-  }
+	"devDependencies": {
+		"expect.js": "^0.3.1",
+		"grunt-contrib-jshint": "^0.10.0",
+		"grunt-contrib-nodeunit": "^0.3.3",
+		"grunt-contrib-watch": "^0.6.1",
+		"grunt-mocha-cli": "^1.9.0",
+		"jshint-stylish": "^0.2.0",
+		"load-grunt-tasks": "^0.4.0",
+		"time-grunt": "^0.3.1"
+	},
+	"scripts": {
+		"test": "grunt"
+	},
+	"bin": {
+		"booking": "cli.js"
+	},
+	"preferGlobal": "true",
+	"dependencies": {
+		"body-parser": "^1.8.4",
+		"express": "^4.9.4",
+		"log4js": "^0.6.21",
+		"moment": "^2.8.3",
+		"mongoose": "^3.8.16",
+		"nodemon": "^1.2.1",
+		"request": "^2.44.0",
+		"serve-static": "^1.6.2",
+		"string": "^2.1.0",
+		"underscore": "^1.7.0"
+	}
 }

@@ -1,49 +1,44 @@
-/*global describe,it*/
 (function () {
 	"use strict";
 
 	var expect = require('expect.js');
-	var times = require('../lib/backend/services/times.js');
-	var app = require("../lib/app.js");
-	var logger = require("../lib/logger.js");
+	var fixtures = require("./fixtures.js");
+	var logger = require("./logger.js");
 	var request = require("request");
+	var mongoose = require("mongoose");
+	mongoose.connect('mongodb://localhost/test');
 
 	var server;
-
-	var testCar = {
-		name: "TestName",
-		number: "TestNumber",
-		desc: "TestDesc123"
+	var testModelData = {
+		name: "TestModel",
+		desc: "TestModel description"
 	}
-
 	var port = 3333;
-
-	var baseUrl = "http://localhost:3333/cars";
+	var baseUrl = "http://localhost:3333/test";
 
 	before(function (done) {
 
 		this.timeout(5000);
 
+		var app = fixtures.TestApp;
+		var TestModel = fixtures.TestModel;
+		var TestRouter = fixtures.TestRouter;
+
+		app.use("/test", new TestRouter({
+			model: TestModel
+		}));
+
 		server = app.listen(port, function () {
-			//logger.debug("Test server listening on port " + port);
-
-			request.put(baseUrl, function (err, res, result) {
-				logger.debug(err);
-				expect(err).not.to.be.ok();
-				expect(res.statusCode).to.be(200);
-				done();
-
-			}).json(testCar);
-
-
+			done();
 		});
+
 	});
 
 	after(function (done) {
 
 		var url = baseUrl;
 		var search = {
-			"name": testCar.desc
+			"name": testModelData.desc
 		}
 
 		request.post(url, function (err, res, result) {
@@ -65,68 +60,14 @@
 
 	});
 
-	describe('Car router module test.', function () {
-
-		it('find', function (done) {
-
-			var url = baseUrl;
-
-			request.get(url, function (err, res, result) {
-
-				//logger.debug("find result: ", result);
-
-				expect(err).not.to.be.ok();
-				expect(res.statusCode).to.be(200);
-				expect(result).to.be.an("array");
-
-				done();
-
-			}).json();
-
-		});
-
-		it('search', function (done) {
-
-			var obj = testCar;
-			obj.name = "MeinTestName123Abc";
-			var url = baseUrl;
-
-			request.put(url, function (err, res, result) {
-
-				expect(err).not.to.be.ok();
-
-				var search = {
-					name: obj.name
-				}
-
-				request.post(baseUrl, function (err, res, result) {
-
-					// logger.debug("search result: ", result);
-
-					expect(err).not.to.be.ok();
-					expect(res.statusCode).to.be(200);
-					expect(result).to.be.an("array");
-					expect(result[0].name).to.be.eql(search.name);
-
-					done();
-
-				}).json(search);
-
-
-			}).json(obj);
-
-
-		});
-
+	describe('Router module test.', function () {
 
 		it('create', function (done) {
 
-			var obj = testCar;
+			var obj = testModelData;
 			var url = baseUrl;
 
 			request.put(url, function (err, res, result) {
-
-				//logger.debug("create result: ", result);
 
 				expect(err).not.to.be.ok();
 				expect(res.statusCode).to.be(200);
@@ -141,6 +82,151 @@
 
 		});
 
+		it('update', function (done) {
+
+			var url = baseUrl;
+
+			request.get(url, function (err, res, result) {
+
+				expect(err).not.to.be.ok();
+				expect(res.statusCode).to.be(200);
+
+				var item = result[0];
+				item.name = "My updated testmodel name";
+				var id = item._id;
+
+				request.post(url + "/" + id, function (err, res, result) {
+
+					expect(err).not.to.be.ok();
+					expect(res.statusCode).to.be(200);
+					expect(result.name).to.be(item.name);
+
+				}).json(item);
+
+				done();
+
+			}).json();
+
+		});
+
+		it('find - by id', function (done) {
+
+			var url = baseUrl;
+
+			request.get(url, function (err, res, result) {
+
+				expect(err).not.to.be.ok();
+				expect(res.statusCode).to.be(200);
+
+				var item = result[0];
+				var id = item._id;
+
+				request.get(url + "/" + id, function (err, res, result) {
+
+					expect(err).not.to.be.ok();
+					expect(res.statusCode).to.be(200);
+
+					expect(id).to.be(result._id);
+
+				}).json();
+
+				done();
+
+			}).json();
+
+		});
+
+
+		it('find - with defaults', function (done) {
+
+			var url = baseUrl;
+
+			request.get(url, function (err, res, result) {
+
+				expect(err).not.to.be.ok();
+				expect(res.statusCode).to.be(200);
+				expect(result).to.be.an("array");
+
+				done();
+
+			}).json();
+
+		});
+
+		it('find - with skip=2', function (done) {
+
+			var url = baseUrl;
+
+			request.put(url, function (err, res, result) {
+
+				expect(err).not.to.be.ok();
+				expect(res.statusCode).to.be(200);
+
+				var len = -1;
+				request.get(url, function (err, res, result) {
+
+					expect(err).not.to.be.ok();
+					expect(res.statusCode).to.be(200);
+
+					var len = result.length;
+					expect(len).to.be.above(2);
+
+					request.get(url, function (err, res, result) {
+
+						expect(err).not.to.be.ok();
+						expect(res.statusCode).to.be(200);
+
+						var expected = len - 1;
+						expect(result.length).to.be(expected);
+
+						done();
+
+					}).qs({
+						skip: 1
+					}).json();
+
+
+				}).json();
+
+
+			}).json(testModelData);
+
+		});
+
+		it('find - with search params', function (done) {
+
+			var url = baseUrl;
+			var obj = testModelData;
+			obj.name = "MeinTestModel123";
+
+			request.put(url, function (err, res, result) {
+
+				expect(err).not.to.be.ok();
+				expect(res.statusCode).to.be(200);
+
+				var search = {
+					name: obj.name
+				}
+
+				request.post(baseUrl, function (err, res, result) {
+
+					expect(err).not.to.be.ok();
+					expect(res.statusCode).to.be(200);
+
+					expect(result).to.be.an("array");
+					expect(result[0].name).to.be.eql(search.name);
+
+					done();
+
+				}).json(search);
+
+
+			}).json(obj);
+
+
+		});
+
+
 		it('remove', function (done) {
 
 			var url = baseUrl;
@@ -151,11 +237,8 @@
 				expect(res.statusCode).to.be(200);
 
 				var id = result[0]._id;
-				var urlDel = url + "/" + id;
 
-				request.del(urlDel, function (err2, res2, result2) {
-
-					// logger.debug("RESULT 2: ", result2.model._id);
+				request.del(url + "/" + id, function (err2, res2, result2) {
 
 					expect(err2).not.to.be.ok();
 					expect(res2.statusCode).to.be(200);
