@@ -9,10 +9,12 @@
 	mongoose.connect('mongodb://localhost/test');
 
 	var server;
+
 	var testModelData = {
 		name: "TestModel",
 		desc: "TestModel description"
 	}
+
 	var port = 3333;
 	var baseUrl = "http://localhost:3333/test";
 
@@ -36,6 +38,8 @@
 
 	after(function (done) {
 
+		this.timeout(3000);
+
 		var url = baseUrl;
 		var search = {
 			"desc": testModelData.desc
@@ -54,7 +58,7 @@
 
 			setTimeout(function () {
 				done();
-			}, 1900);
+			}, 2900);
 
 		}).json(search);
 
@@ -71,9 +75,9 @@
 
 				expect(err).not.to.be.ok();
 				expect(res.statusCode).to.be(200);
+
 				expect(result._id).to.be.ok();
 				expect(result.name).to.eql(obj.name);
-				expect(result.number).to.eql(obj.number);
 				expect(result.desc).to.eql(obj.desc);
 
 				done();
@@ -100,11 +104,13 @@
 
 					expect(err).not.to.be.ok();
 					expect(res.statusCode).to.be(200);
+
+					expect(result.name).to.be.ok();
 					expect(result.name).to.be(updateData.name);
 
-				}).json(updateData);
+					done();
 
-				done();
+				}).json(updateData);
 
 			}).json();
 
@@ -127,11 +133,12 @@
 					expect(err).not.to.be.ok();
 					expect(res.statusCode).to.be(200);
 
-					expect(id).to.be(result._id);
+					expect(result._id).to.be.ok();
+					expect(result._id).to.be(id);
+
+					done();
 
 				}).json();
-
-				done();
 
 			}).json();
 
@@ -146,6 +153,7 @@
 
 				expect(err).not.to.be.ok();
 				expect(res.statusCode).to.be(200);
+
 				expect(result).to.be.an("array");
 
 				done();
@@ -186,9 +194,7 @@
 						skip: 1
 					}).json();
 
-
 				}).json();
-
 
 			}).json(testModelData);
 
@@ -221,9 +227,7 @@
 
 				}).json(search);
 
-
 			}).json(obj);
-
 
 		});
 
@@ -243,8 +247,10 @@
 
 					expect(err2).not.to.be.ok();
 					expect(res2.statusCode).to.be(200);
+
 					expect(result2.model._id).to.be.eql(id);
 					expect(result2.deleted).to.be.ok();
+
 					done();
 
 				}).json()
