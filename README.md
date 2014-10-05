@@ -99,7 +99,7 @@ New contributors are welcome. Just send an email.
 
 ## Maintainers
 
-* Dennis Ahaus (dennis.ahaus.github.io)
+* Dennis Ahaus (dennisahaus.github.io)
 
 
 ## License
