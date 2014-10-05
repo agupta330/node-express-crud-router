@@ -59,7 +59,7 @@ http://localhost:3000/MyModel.
     * Returns the created model
 
   * POST --> Search with criterias
-    * HTTP BODY: {<mongoose search criteria>}
+    * HTTP BODY: {&lt;mongoose search criteria&gt;}
     * Returns the matching models
 
 * http://yourServer:port/YourModel/<model-id>
