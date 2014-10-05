@@ -69,6 +69,10 @@ http://localhost:3000/MyModel.
   * POST --> Update the referenced model
   * PUT --> Update the referenced model
 
+* http://yourServer:port/YourModel/config
+  * POST, PUT -->  Update configuration
+    * {loglevel:"DEBUG|INFO"} 
+
 ## API usage examples
 
 * `GET http://server:port/modelName`
