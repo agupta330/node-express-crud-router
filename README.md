@@ -71,7 +71,9 @@ http://localhost:3000/MyModel.
 
 * http://yourServer:port/YourModel/config
   * POST, PUT -->  Update configuration
-    * {loglevel:"DEBUG|INFO"} 
+    * {loglevel:"DEBUG|INFO"}
+  * GET -->  Get the model configuration
+    * returns JSON {loglevel:"DEBUG|INFO"} 
 
 ## API usage examples
 
@@ -93,6 +95,10 @@ http://localhost:3000/MyModel.
 
 * `POST http://server:port/modelName/modelId` body: {new data}
   * returns JSON {&lt;your model with new data&gt;}
+
+* `POST http://server:port/modelName/config` body: {loglevel:"DEBUG"}
+  * returns JSON {loglevel:"DEBUG"}, updates the model configuration
+
 
 
 
