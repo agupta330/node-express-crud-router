@@ -74,6 +74,13 @@ http://localhost:3000/MyModel.
 * `GET http://server:port/modelName`
   * returns JSON [{&lt;your model&gt;}, {&lt;your model&gt;}, ...]
 
+* `GET http://server:port/modelName?skip=10&limit=5`
+  * returns JSON [{&lt;your model&gt;}, {&lt;your model&gt;}, ...].
+    The first 10 items will be skipped (not part of the result) and
+    only 5 items will be returned. This also depends on the amount of
+    available data. If there are only 3 items in database [] will be returned
+    because of skipping parameter will skip the first 10 items.
+
 * `GET http://server:port/modelName/modelId`
   * returns JSON {&lt;your model&gt;}
 
