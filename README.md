@@ -48,12 +48,12 @@ http://localhost:3000/MyModel.
 ### REST API
 
 * http://yourServer:port/YourModel/[?skip=&lt;int&gt;&limit=&lt;int&gt;]
- * GET --> Get list of available models
-  * skip param skips <int> models from the top of the result list
-  * skip default is 0
-  * limit param limits <int> models from the bottom of the result list
-   * limit default is 25
-   * Returns an array of available models
+  * GET --> Get list of available models
+    * skip param skips <int> models from the top of the result list
+    * skip default is 0
+    * limit param limits <int> models from the bottom of the result list
+    * limit default is 25
+    * Returns an array of available models
   * PUT --> Create new model
    * Returns the created model
   * POST --> Search with criterias
