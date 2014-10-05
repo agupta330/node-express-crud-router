@@ -2,7 +2,13 @@ An express-mongodb-CRUD (create-read-update-delete) generic router
 
 ## Install
 
-`npm install https://github.com/DennisAhaus/express-mongodb-crud --save`
+Latest stable version:
+`npm install https://github.com/DennisAhaus/express-mongodb-crud/tarball/master --save`
+
+Selected version:
+`npm install https://github.com/DennisAhaus/express-mongodb-crud/tarball/&lt;version&gt; --save`
+Example: https://github.com/DennisAhaus/express-mongodb-crud/tarball/&lt;0.0.1&gt
+For the list of available versions see https://github.com/DennisAhaus/express-mongodb-crud/releases
 
 ## Getting started
 
