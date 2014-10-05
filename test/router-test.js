@@ -66,6 +66,27 @@
 
 	describe('Router module test.', function () {
 
+		it('config - loglevel DEBUG', function (done) {
+
+			var url = baseUrl + "/config";
+
+			var config = {
+				loglevel: "INFO"
+			}
+
+			request.post(url, function (err, res, result) {
+
+				expect(err).not.to.be.ok();
+				expect(res.statusCode).to.be(200);
+
+				expect(result.loglevel).to.be(config.loglevel);
+
+				done();
+
+			}).json(config);
+
+		});
+
 		it('create', function (done) {
 
 			var obj = testModelData;
