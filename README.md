@@ -107,4 +107,4 @@ New contributors are welcome. Just send an email.
 Copyright (c) 2014
 Licensed under the MIT license.
 
-https://github.com/DennisAhaus/express-mongodb-crud/LICENSE.md
+https://github.com/DennisAhaus/express-mongodb-crud/blob/master/LICENSE.md
