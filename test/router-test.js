@@ -280,6 +280,32 @@
 
 		});
 
+		it('removeAll', function (done) {
+
+			var url = baseUrl;
+
+			request.del(url, function (err, res, result) {
+
+				expect(err).not.to.be.ok();
+				expect(res.statusCode).to.be(200);
+
+				expect(result.deletedAll).to.be.ok();
+
+				request.get(url, function (err2, res2, result2) {
+
+					expect(err2).not.to.be.ok();
+					expect(res2.statusCode).to.be(200);
+
+					expect(result2).to.be.empty()
+
+					done();
+
+				}).json()
+
+			}).json();
+
+		});
+
 	});
 
 }());
