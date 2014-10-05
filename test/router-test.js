@@ -92,16 +92,17 @@
 				expect(res.statusCode).to.be(200);
 
 				var item = result[0];
-				item.name = "My updated testmodel name";
 				var id = item._id;
+				var updateData = {};
+				updateData.name = "My updated testmodel name";
 
 				request.post(url + "/" + id, function (err, res, result) {
 
 					expect(err).not.to.be.ok();
 					expect(res.statusCode).to.be(200);
-					expect(result.name).to.be(item.name);
+					expect(result.name).to.be(updateData.name);
 
-				}).json(item);
+				}).json(updateData);
 
 				done();
 
