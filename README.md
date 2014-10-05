@@ -61,7 +61,7 @@ http://localhost:3000/MyModel.
     * HTTP BODY: {&lt;mongoose search criteria&gt;}
     * Returns the matching models
 
-  * DELETE --> Not available
+  * DELETE --> Delete all available models
 
 * http://yourServer:port/YourModel/&lt;model-id&gt;
   * GET --> Get the referenced model
@@ -86,7 +86,6 @@ http://localhost:3000/MyModel.
 
 * `DELETE http://server:port/modelName/modelId`
   * returns JSON {&lt;your model&gt;, "deleted":"true"}
-
 
 * `POST http://server:port/modelName/modelId` body: {new data}
   * returns JSON {&lt;your model with new data&gt;}
