@@ -101,6 +101,11 @@ New contributors are welcome. Just send an email.
 
 * Dennis Ahaus (dennisahaus.github.io)
 
+## Change log
+
+* 0.0.1
+  * Initial release
+
 
 ## License
 
