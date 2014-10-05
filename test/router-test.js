@@ -3,7 +3,7 @@
 
 	var expect = require('expect.js');
 	var fixtures = require("./fixtures.js");
-	var logger = require("./logger.js");
+	var logger = require("../lib/logger.js");
 	var request = require("request");
 	var mongoose = require("mongoose");
 	mongoose.connect('mongodb://localhost/test');
