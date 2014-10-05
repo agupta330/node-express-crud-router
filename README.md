@@ -1,5 +1,4 @@
-> The best module ever.
-
+An express-mongodb-CRUD (create-read-update-delete) generic router
 
 ## Install
 
@@ -69,6 +68,23 @@ http://localhost:3000/MyModel.
   * DELETE --> Delete the referenced model
   * POST --> Update the referenced model
   * PUT --> Update the referenced model
+
+## API usage examples
+
+* `GET http://server:port/modelName`
+  * returns JSON [{&lt;your model&gt;}, {&lt;your model&gt;}, ...]
+
+* `GET http://server:port/modelName/modelId`
+  * returns JSON {&lt;your model&gt;}
+
+* `DELETE http://server:port/modelName/modelId`
+  * returns JSON {&lt;your model&gt;, "deleted":"true"}
+
+
+* `POST http://server:port/modelName/modelId` body: {new data}
+  * returns JSON {&lt;your model with new data&gt;}
+
+
 
 ## Contributing
 
