@@ -54,22 +54,27 @@ http://localhost:3000/MyModel.
     * limit param limits <int> models from the bottom of the result list
     * limit default is 25
     * Returns an array of available models
+
   * PUT --> Create new model
-   * Returns the created model
+    * Returns the created model
+
   * POST --> Search with criterias
-   * HTTP BODY: {<mongoose search criteria>}
-   * Returns the matching models
+    * HTTP BODY: {<mongoose search criteria>}
+    * Returns the matching models
 
 * http://yourServer:port/YourModel/<model-id>
- * GET --> Get the referenced model
- * DELETE --> Delete the referenced model
- * POST --> Update the referenced model
- * PUT --> Update the referenced model
+  * GET --> Get the referenced model
+  * DELETE --> Delete the referenced model
+  * POST --> Update the referenced model
+  * PUT --> Update the referenced model
 
 ## Contributing
 
-* Dennis Ahaus
-* New contributors are welcome
+New contributors are welcome. Just send an email.
+
+## Maintainers
+
+* Dennis Ahaus (dennis.ahaus.github.io)
 
 
 ## License
@@ -77,25 +82,4 @@ http://localhost:3000/MyModel.
 Copyright (c) 2014
 Licensed under the MIT license.
 
-License
-
-(The MIT License)
-
-Copyright (c) by Dennis Ahaus <dennis.ahaus@gmail.com>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-documentation files (the 'Software'), to deal in the Software without restriction, including without
-limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom the Software is furnished
-to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
-AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+https://github.com/DennisAhaus/express-mongodb-crud/LICENSE.md
