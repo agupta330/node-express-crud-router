@@ -9,7 +9,7 @@ An express-mongodb-CRUD (create-read-update-delete) generic router
 First you have to install node.js and mongodb. After adding the router
 to express (expressjs.com) you can use the rest based CRUD api.
 
-## Usage
+### Usage
 
 ```js
 
@@ -46,7 +46,7 @@ http://localhost:3000/MyModel.
 
 ### REST API
 
-* http://yourServer:port/YourModel/[?skip=&lt;int&gt;&limit=&lt;int&gt;]
+* `http://yourServer:port/YourModel/[?skip=&lt;int&gt;&limit=&lt;int&gt;]`
   * GET --> Get list of available models
     * skip param skips <int> models from the top of the result list
     * skip default is 0
@@ -63,19 +63,19 @@ http://localhost:3000/MyModel.
 
   * DELETE --> Delete all available models
 
-* http://yourServer:port/YourModel/&lt;model-id&gt;
+* `http://yourServer:port/YourModel/&lt;model-id&gt`
   * GET --> Get the referenced model
   * DELETE --> Delete the referenced model
   * POST --> Update the referenced model
   * PUT --> Update the referenced model
 
-* http://yourServer:port/YourModel/config
+* `http://yourServer:port/YourModel/config`
   * POST, PUT -->  Update configuration
     * {loglevel:"DEBUG|INFO"}
   * GET -->  Get the model configuration
-    * returns JSON {loglevel:"DEBUG|INFO"} 
+    * returns JSON {loglevel:"DEBUG|INFO"}
 
-## API usage examples
+### API usage examples
 
 * `GET http://server:port/modelName`
   * returns JSON [{&lt;your model&gt;}, {&lt;your model&gt;}, ...]
@@ -99,7 +99,9 @@ http://localhost:3000/MyModel.
 * `POST http://server:port/modelName/config` body: {loglevel:"DEBUG"}
   * returns JSON {loglevel:"DEBUG"}, updates the model configuration
 
+## Testing
 
+`npm test`
 
 
 ## Contributing
