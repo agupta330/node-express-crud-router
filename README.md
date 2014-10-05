@@ -62,7 +62,9 @@ http://localhost:3000/MyModel.
     * HTTP BODY: {&lt;mongoose search criteria&gt;}
     * Returns the matching models
 
-* http://yourServer:port/YourModel/<model-id>
+  * DELETE --> Not available
+
+* http://yourServer:port/YourModel/&lt;model-id&gt;
   * GET --> Get the referenced model
   * DELETE --> Delete the referenced model
   * POST --> Update the referenced model
