@@ -52,7 +52,7 @@ http://localhost:3000/MyModel.
 
 ### REST API
 
-* `http://yourServer:port/YourModel/[?skip=&lt;int&gt;&limit=&lt;int&gt;]`
+* `http://yourServer:port/YourModel/[?skip=<int>&limit=<int>]`
   * GET --> Get list of available models
     * skip param skips <int> models from the top of the result list
     * skip default is 0
@@ -69,7 +69,7 @@ http://localhost:3000/MyModel.
 
   * DELETE --> Delete all available models
 
-* `http://yourServer:port/YourModel/&lt;model-id&gt`
+* `http://yourServer:port/YourModel/<model-id>`
   * GET --> Get the referenced model
   * DELETE --> Delete the referenced model
   * POST --> Update the referenced model
@@ -93,13 +93,13 @@ http://localhost:3000/MyModel.
     available data. If there are only 3 items in database [] will be returned
     because of skipping parameter will skip the first 10 items.
 
-* `GET http://server:port/modelName/modelId`
+* `GET http://server:port/modelName/<modelId>`
   * returns JSON {&lt;your model&gt;}
 
-* `DELETE http://server:port/modelName/modelId`
+* `DELETE http://server:port/modelName/<modelId>`
   * returns JSON {&lt;your model&gt;, "deleted":"true"}
 
-* `POST http://server:port/modelName/modelId` body: {new data}
+* `POST http://server:port/modelName/<modelId>` body: {new data}
   * returns JSON {&lt;your model with new data&gt;}
 
 * `POST http://server:port/modelName/config` body: {loglevel:"DEBUG"}
