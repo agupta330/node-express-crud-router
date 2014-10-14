@@ -1,6 +1,6 @@
 {
 	"name": "express-mongodb-crud",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"main": "lib/router.js",
 	"description": "An express-mongodb-CRUD (create-read-update-delete) generic router",
 	"homepage": "http://github.io/express-mongodb-crud",
@@ -25,6 +25,7 @@
     "mongo",
     "mongodb"
   ],
+
 	"devDependencies": {
 		"expect.js": "^0.3.1",
 		"mocha": "^1.21.4"

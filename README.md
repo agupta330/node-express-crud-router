@@ -120,8 +120,17 @@ New contributors are welcome. Just send an email.
 
 ## Change log
 
+* 0.0.2
+  * Fix issue#1 https://github.com/DennisAhaus/express-mongodb-crud/issues/1
+
 * 0.0.1
   * Initial release
+
+## Roadmap
+
+* API to CRUD new models
+  * Create API to CRUD new models
+  * Create as additional API beside of code based model creation
 
 
 ## License
