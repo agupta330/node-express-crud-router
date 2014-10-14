@@ -122,7 +122,7 @@ New contributors are welcome. Just send an email.
 
 * 0.0.2
   * Fix issue#1 https://github.com/DennisAhaus/express-mongodb-crud/issues/1
-
+  * Create new test lib struc for better maintainence of tests
 * 0.0.1
   * Initial release
 
