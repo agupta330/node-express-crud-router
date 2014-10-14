@@ -14,26 +14,46 @@
 
 	app.use(bodyParser.json());
 
-	app.use(function (err, req, res, next) {
-		logger.error(err);
-		res.status(500).json({
-			statusCode: 500,
-			error: err
-		});
-	});
-
 	exports.TestApp = app;
 
 	var Schema = mongoose.Schema;
 
 	var TestSchema = new Schema({
-		name: "string",
-		desc: "string",
+		name: {
+			type: String,
+			required: true
+		},
+		desc: {
+			type: String,
+			required: true
+		},
+		ident: {
+			type: String,
+			default: "abcdef123qwe",
+			required: true
+		}
 	});
 
 	exports.TestModel = mongoose.model("TestModel", TestSchema);
 
 	exports.TestRouter = require("../lib/router.js");
+
+	exports.TestModelData = {
+		name: "TestModel",
+		desc: "TestModel description",
+		ident: "TestAbcdef123Qwe"
+	}
+
+	function con() {
+		this.port = 31313;
+		this.host = "localhost";
+		this.path = "test";
+		this.getBaseUrl = function () {
+			return "http://" + this.host + ":" + this.port + "/" + this.path;
+		}
+	};
+
+	exports.host = new con();
 
 
 }());

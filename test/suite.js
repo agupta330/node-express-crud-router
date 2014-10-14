@@ -9,33 +9,53 @@
 
 	var server;
 
-	var testModelData = {
-		name: "TestModel",
-		desc: "TestModel description"
-	}
+	var testData = fixtures.TestModelData;
+	var baseUrl = fixtures.host.getBaseUrl();
+	var port = fixtures.host.port;
 
-	var port = 3333;
-	var baseUrl = "http://localhost:3333/test";
+	// logger.setLevel("DEBUG");
 
-	describe('Model creation test.', require("./create-test.js"));
+
+	describe('Model creation', require("./create-test.js"));
+	describe('Model search', require("./find-test.js"));
+	describe('Model update', require("./update-test.js"));
+	describe('Model removal', require("./remove-test.js"));
+	describe('Model config', require("./config-test.js"));
 
 
 	before(function (done) {
 
-		// this.timeout(3000);
-
 		mongoose.connect('mongodb://localhost/test');
+		mongoose.set("debug", false);
 
 		var app = fixtures.TestApp;
 		var TestModel = fixtures.TestModel;
 		var TestRouter = fixtures.TestRouter;
 
-		app.use("/test", new TestRouter({
+		var path = fixtures.host.path;
+		app.use("/" + path, new TestRouter({
 			model: TestModel
 		}));
 
+		app.use(function (err, req, res, next) {
+			// console.log("ERRROR: ", err);
+			res.status(500).json({
+				statusCode: 500,
+				message: err.toString()
+			});
+		});
+
 		server = app.listen(port, function () {
-			done();
+
+			request.put(baseUrl, function (err, res, result) {
+
+				expect(err).not.to.be.ok();
+				expect(res.statusCode).to.be(200);
+
+				done();
+
+			}).json(testData);
+
 		});
 
 	});
@@ -48,10 +68,8 @@
 
 		var url = baseUrl;
 		var search = {
-			"desc": testModelData.desc
+			"ident": testData.ident
 		}
-
-		var tasks = [];
 
 		request.post(url, function (err, res, result) {
 
@@ -80,7 +98,6 @@
 		}).json(search);
 
 	});
-
 
 
 }());
