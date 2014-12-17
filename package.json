@@ -1,23 +1,23 @@
 {
-	"name": "express-mongodb-crud",
-	"version": "0.0.2",
-	"main": "lib/router.js",
-	"description": "An express-mongodb-CRUD (create-read-update-delete) generic router",
-	"homepage": "http://github.io/express-mongodb-crud",
-	"bugs": "http://github.io/express-mongodb-crud/issues",
-	"author": {
-		"name": "Dennis Ahaus",
-		"email": "dennis.ahaus@gmail.com"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/DennisAhaus/express-mongodb-crud"
-	},
-	"license": "MIT",
-	"files": [
+  "name": "express-mongodb-crud",
+  "version": "0.0.2",
+  "main": "lib/router.js",
+  "description": "An express-mongodb-CRUD (create-read-update-delete) generic router",
+  "homepage": "http://github.io/express-mongodb-crud",
+  "bugs": "http://github.io/express-mongodb-crud/issues",
+  "author": {
+    "name": "Dennis Ahaus",
+    "email": "dennis.ahaus@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DennisAhaus/express-mongodb-crud"
+  },
+  "license": "MIT",
+  "files": [
     "lib"
   ],
-	"keywords": [
+  "keywords": [
     "express",
     "CRUD",
     "router",
@@ -25,23 +25,23 @@
     "mongo",
     "mongodb"
   ],
-
-	"devDependencies": {
-		"expect.js": "^0.3.1",
-		"mocha": "^1.21.4"
-	},
-	"scripts": {
-		"test": "mocha ./test/suite.js"
-	},
-	"preferGlobal": "false",
-	"dependencies": {
-		"async": "^0.9.0",
-		"body-parser": "^1.8.4",
-		"express": "^4.9.4",
-		"log4js": "^0.6.21",
-		"moment": "^2.8.3",
-		"mongoose": "^3.8.16",
-		"q": "^1.0.1",
-		"request": "^2.44.0"
-	}
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^1.21.4"
+  },
+  "scripts": {
+    "test": "mocha ./test/suite.js"
+  },
+  "preferGlobal": "false",
+  "dependencies": {
+    "async": "^0.9.0",
+    "body-parser": "^1.8.4",
+    "commander": "^2.5.1",
+    "express": "^4.10.6",
+    "log4js": "^0.6.21",
+    "moment": "^2.8.3",
+    "mongoose": "^3.9.6",
+    "q": "^1.0.1",
+    "request": "^2.51.0"
+  }
 }

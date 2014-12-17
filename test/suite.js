@@ -16,11 +16,11 @@
 	// logger.setLevel("DEBUG");
 
 
-	describe('Model creation', require("./create-test.js"));
-	describe('Model search', require("./find-test.js"));
-	describe('Model update', require("./update-test.js"));
-	describe('Model removal', require("./remove-test.js"));
-	describe('Model config', require("./config-test.js"));
+	describe('Model creation', require("./tests/create-test.js"));
+	describe('Model search', require("./tests/find-test.js"));
+	describe('Model update', require("./test/update-test.js"));
+	describe('Model removal', require("./tests/remove-test.js"));
+	describe('Model config', require("./tests/config-test.js"));
 
 
 	before(function (done) {
