@@ -1,0 +1,18 @@
+{
+	"datasource": "mongodb",
+	"properties": {
+		"name": {
+			"type": "String",
+			"required": true
+		},
+		"desc": {
+			"type": "String",
+			"required": true
+		},
+		"ident": {
+			"type": "String",
+			"default": "abcdef123qwe",
+			"required": true
+		}
+	}
+}

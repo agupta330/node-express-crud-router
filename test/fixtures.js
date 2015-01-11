@@ -1,12 +1,13 @@
-(function () {
+(function() {
 	"use strict";
 
 	var express = require("express");
 	var bodyParser = require("body-parser");
 	var logger = require("../lib/logger.js");
-	var mongoose = require("mongoose");
 
 	var app = express();
+
+	app.set("json spaces", 2);
 
 	app.use(bodyParser.urlencoded({
 		extended: false
@@ -14,29 +15,19 @@
 
 	app.use(bodyParser.json());
 
+	app.use(function(err, req, res, next) {
+		logger.error(err);
+	})
+
 	exports.TestApp = app;
 
-	var Schema = mongoose.Schema;
+	var ResourceBuilder = require(__dirname + "/../lib/ResourceBuilder.js");
 
-	var TestSchema = new Schema({
-		name: {
-			type: String,
-			required: true
-		},
-		desc: {
-			type: String,
-			required: true
-		},
-		ident: {
-			type: String,
-			default: "abcdef123qwe",
-			required: true
-		}
-	});
+	var r = new ResourceBuilder({
+		modelRootFolder: __dirname + '/models',
+	})
 
-	exports.TestModel = mongoose.model("TestModel", TestSchema);
-
-	exports.TestRouter = require("../lib/router.js");
+	app.use("/api", r.router("users"));
 
 	exports.TestModelData = {
 		name: "TestModel",
@@ -44,16 +35,16 @@
 		ident: "TestAbcdef123Qwe"
 	}
 
-	function con() {
+	function Connection() {
 		this.port = 31313;
 		this.host = "localhost";
-		this.path = "test";
-		this.getBaseUrl = function () {
+		this.path = "api/users";
+		this.getBaseUrl = function() {
 			return "http://" + this.host + ":" + this.port + "/" + this.path;
 		}
 	};
 
-	exports.host = new con();
+	exports.host = new Connection();
 
 
 }());

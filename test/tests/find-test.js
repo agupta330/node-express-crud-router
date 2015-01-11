@@ -1,226 +1,226 @@
-(function () {
-	"use strict";
+(function() {
+  "use strict";
 
-	var expect = require('expect.js');
-	var fixtures = require("./fixtures.js");
-	var logger = require("../lib/logger.js");
-	var request = require("request");
+  var expect = require('expect.js');
+  var fixtures = require("../fixtures.js");
+  var logger = require("../../lib/logger.js");
+  var request = require("request");
 
-	var testModelData = fixtures.TestModelData;
-	var baseUrl = fixtures.host.getBaseUrl();
+  var testModelData = fixtures.TestModelData;
+  var baseUrl = fixtures.host.getBaseUrl();
 
 
-	module.exports = function () {
+  module.exports = function() {
 
-		beforeEach(function (done) {
-			request.put(baseUrl, function (err, res, result) {
+    beforeEach(function(done) {
+      request.put(baseUrl, function(err, res, result) {
 
-				expect(err).not.to.be.ok();
-				expect(res.statusCode).to.be(200);
+        expect(err).not.to.be.ok();
+        expect(res.statusCode).to.be(200);
 
-				done();
+        done();
 
-			}).json(testModelData);
-		});
+      }).json(testModelData);
+    });
 
 
-		it('#find - by id', function (done) {
+    it('#find - by id', function(done) {
 
-			var url = baseUrl;
+      var url = baseUrl;
 
-			request.get(url, function (err, res, result) {
+      request.get(url, function(err, res, result) {
 
-				expect(err).not.to.be.ok();
-				expect(res.statusCode).to.be(200);
+        expect(err).not.to.be.ok();
+        expect(res.statusCode).to.be(200);
 
-				var item = result[0];
-				var id = item._id;
+        var item = result[0];
+        var id = item._id;
 
-				request.get(url + "/" + id, function (err, res, result) {
+        request.get(url + "/" + id, function(err, res, result) {
 
-					expect(err).not.to.be.ok();
-					expect(res.statusCode).to.be(200);
+          expect(err).not.to.be.ok();
+          expect(res.statusCode).to.be(200);
 
-					expect(result._id).to.be.ok();
-					expect(result._id).to.be(id);
+          expect(result._id).to.be.ok();
+          expect(result._id).to.be(id);
 
-					done();
+          done();
 
-				}).json();
+        }).json();
 
-			}).json();
+      }).json();
 
-		});
+    });
 
 
-		it('#find - with defaults', function (done) {
+    it('#find - with defaults', function(done) {
 
-			var url = baseUrl;
+      var url = baseUrl;
 
-			request.get(url, function (err, res, result) {
+      request.get(url, function(err, res, result) {
 
-				expect(err).not.to.be.ok();
-				expect(res.statusCode).to.be(200);
+        expect(err).not.to.be.ok();
+        expect(res.statusCode).to.be(200);
 
-				expect(result).to.be.an("array");
+        expect(result).to.be.an("array");
 
-				done();
+        done();
 
-			}).json();
+      }).json();
 
-		});
+    });
 
-		it('#find - with skip', function (done) {
+    it('#find - with skip', function(done) {
 
-			var url = baseUrl;
+      var url = baseUrl;
 
-			request.put(url, function (err, res, result) {
+      request.put(url, function(err, res, result) {
 
-				expect(err).not.to.be.ok();
-				expect(res.statusCode).to.be(200);
+        expect(err).not.to.be.ok();
+        expect(res.statusCode).to.be(200);
 
-				var len = -1;
-				request.get(url, function (err, res, result) {
+        var len = -1;
+        request.get(url, function(err, res, result) {
 
-					expect(err).not.to.be.ok();
-					expect(res.statusCode).to.be(200);
+          expect(err).not.to.be.ok();
+          expect(res.statusCode).to.be(200);
 
-					var len = result.length;
-					expect(len).to.be.above(1);
+          var len = result.length;
+          expect(len).to.be.above(1);
 
-					request.get(url, function (err, res, result) {
+          request.get(url, function(err, res, result) {
 
-						expect(err).not.to.be.ok();
-						expect(res.statusCode).to.be(200);
+            expect(err).not.to.be.ok();
+            expect(res.statusCode).to.be(200);
 
-						var expected = len - 1;
-						expect(result.length).to.be(expected);
+            var expected = len - 1;
+            expect(result.length).to.be(expected);
 
-						done();
+            done();
 
-					}).qs({
-						skip: 1
-					}).json();
+          }).qs({
+            skip: 1
+          }).json();
 
-				}).json();
+        }).json();
 
-			}).json(testModelData);
+      }).json(testModelData);
 
-		});
+    });
 
-		it('#find - with limit', function (done) {
+    it('#find - with limit', function(done) {
 
-			var url = baseUrl;
+      var url = baseUrl;
 
-			request.put(url, function (err, res, result) {
+      request.put(url, function(err, res, result) {
 
-				expect(err).not.to.be.ok();
-				expect(res.statusCode).to.be(200);
+        expect(err).not.to.be.ok();
+        expect(res.statusCode).to.be(200);
 
-				var len = -1;
-				request.get(url, function (err, res, result) {
+        var len = -1;
+        request.get(url, function(err, res, result) {
 
-					expect(err).not.to.be.ok();
-					expect(res.statusCode).to.be(200);
+          expect(err).not.to.be.ok();
+          expect(res.statusCode).to.be(200);
 
-					var len = result.length;
-					expect(len).to.be.above(1);
+          var len = result.length;
+          expect(len).to.be.above(1);
 
-					request.get(url, function (err, res, result) {
+          request.get(url, function(err, res, result) {
 
-						expect(err).not.to.be.ok();
-						expect(res.statusCode).to.be(200);
+            expect(err).not.to.be.ok();
+            expect(res.statusCode).to.be(200);
 
-						expect(result.length).to.be(1);
+            expect(result.length).to.be(1);
 
-						done();
+            done();
 
-					}).qs({
-						limit: 1
-					}).json();
+          }).qs({
+            limit: 1
+          }).json();
 
-				}).json();
+        }).json();
 
-			}).json(testModelData);
+      }).json(testModelData);
 
-		});
+    });
 
 
 
-		it('#find - with skip and limit', function (done) {
+    it('#find - with skip and limit', function(done) {
 
-			var url = baseUrl;
+      var url = baseUrl;
 
-			request.put(url, function (err, res, result) {
+      request.put(url, function(err, res, result) {
 
-				expect(err).not.to.be.ok();
-				expect(res.statusCode).to.be(200);
+        expect(err).not.to.be.ok();
+        expect(res.statusCode).to.be(200);
 
-				var len = -1;
-				request.get(url, function (err, res, result) {
+        var len = -1;
+        request.get(url, function(err, res, result) {
 
-					expect(err).not.to.be.ok();
-					expect(res.statusCode).to.be(200);
+          expect(err).not.to.be.ok();
+          expect(res.statusCode).to.be(200);
 
-					var len = result.length;
-					expect(len).to.be.above(1);
-					var mainResult = result;
+          var len = result.length;
+          expect(len).to.be.above(1);
+          var mainResult = result;
 
-					request.get(url, function (err, res, result) {
+          request.get(url, function(err, res, result) {
 
-						expect(err).not.to.be.ok();
-						expect(res.statusCode).to.be(200);
+            expect(err).not.to.be.ok();
+            expect(res.statusCode).to.be(200);
 
-						expect(result.length).to.be(1);
-						expect(result[0]._id).to.eql(mainResult[1]._id);
+            expect(result.length).to.be(1);
+            expect(result[0]._id).to.eql(mainResult[1]._id);
 
-						done();
+            done();
 
-					}).qs({
-						skip: 1,
-						limit: 1
-					}).json();
+          }).qs({
+            skip: 1,
+            limit: 1
+          }).json();
 
-				}).json();
+        }).json();
 
-			}).json(testModelData);
+      }).json(testModelData);
 
-		});
+    });
 
 
 
-		it('#find - with search params', function (done) {
+    it('#find - with search params', function(done) {
 
-			var url = baseUrl;
-			var obj = testModelData;
-			obj.name = "MeinTestModel123";
+      var url = baseUrl;
+      var obj = testModelData;
+      obj.name = "MeinTestModel123";
 
-			request.put(url, function (err, res, result) {
+      request.put(url, function(err, res, result) {
 
-				expect(err).not.to.be.ok();
-				expect(res.statusCode).to.be(200);
+        expect(err).not.to.be.ok();
+        expect(res.statusCode).to.be(200);
 
-				var search = {
-					name: obj.name
-				}
+        var search = {
+          name: obj.name
+        }
 
-				request.post(baseUrl, function (err, res, result) {
+        request.post(baseUrl, function(err, res, result) {
 
-					expect(err).not.to.be.ok();
-					expect(res.statusCode).to.be(200);
+          expect(err).not.to.be.ok();
+          expect(res.statusCode).to.be(200);
 
-					expect(result).to.be.an("array");
-					expect(result[0].name).to.be.eql(search.name);
+          expect(result).to.be.an("array");
+          expect(result[0].name).to.be.eql(search.name);
 
-					done();
+          done();
 
-				}).json(search);
+        }).json(search);
 
-			}).json(obj);
+      }).json(obj);
 
-		});
+    });
 
 
-	};
+  };
 
 }());

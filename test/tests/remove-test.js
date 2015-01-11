@@ -1,98 +1,98 @@
-(function () {
-	"use strict";
+(function() {
+  "use strict";
 
-	var expect = require('expect.js');
-	var fixtures = require("./fixtures.js");
-	var logger = require("../lib/logger.js");
-	var request = require("request");
+  var expect = require('expect.js');
+  var fixtures = require("../fixtures.js");
+  var logger = require("../../lib/logger.js");
+  var request = require("request");
 
-	var testModelData = fixtures.TestModelData;
-	var baseUrl = fixtures.host.getBaseUrl();
-
-
-	module.exports = function () {
-
-		it('#remove - existing object', function (done) {
-
-			var url = baseUrl;
-
-			logger.debug("Request on url ", url);
-
-			request.get(url, function (err, res, result) {
-
-				expect(err).not.to.be.ok();
-				expect(res.statusCode).to.be(200);
-
-				var id = result[0]._id;
-
-				logger.debug("Remove id ", id);
-
-				request.del(url + "/" + id, function (err2, res2, result2) {
-
-					expect(err2).not.to.be.ok();
-					expect(res2.statusCode).to.be(200);
-
-					expect(result2.model._id).to.be.eql(id);
-					expect(result2.deleted).to.be.ok();
-
-					done();
-
-				}).json()
-
-			}).json();
-
-		});
+  var testModelData = fixtures.TestModelData;
+  var baseUrl = fixtures.host.getBaseUrl();
 
 
+  module.exports = function() {
 
-		it('#remove - with invalid object id', function (done) {
+    it('#remove - existing object', function(done) {
 
-			var url = baseUrl;
-			var id = "InvalidId";
+      var url = baseUrl;
 
-			logger.debug("Request on url ", url + "/" + id);
-			logger.debug("Remove id ", id);
+      logger.debug("Request on url ", url);
 
-			request.del(url + "/" + id, function (err, res, result) {
+      request.get(url, function(err, res, result) {
 
-				expect(err).not.to.be.ok();
-				expect(res.statusCode).to.be(500);
+        expect(err).not.to.be.ok();
+        expect(res.statusCode).to.be(200);
 
-				done();
+        var id = result[0]._id;
 
-			}).json()
+        logger.debug("Remove id ", id);
 
-		});
+        request.del(url + "/" + id, function(err2, res2, result2) {
+
+          expect(err2).not.to.be.ok();
+          expect(res2.statusCode).to.be(200);
+
+          expect(result2.model._id).to.be.eql(id);
+          expect(result2.deleted).to.be.ok();
+
+          done();
+
+        }).json()
+
+      }).json();
+
+    });
 
 
 
-		it('#removeAll', function (done) {
+    it('#remove - with invalid object id', function(done) {
 
-			var url = baseUrl;
+      var url = baseUrl;
+      var id = "InvalidId";
 
-			request.del(url, function (err, res, result) {
+      logger.debug("Request on url ", url + "/" + id);
+      logger.debug("Remove id ", id);
 
-				expect(err).not.to.be.ok();
-				expect(res.statusCode).to.be(200);
+      request.del(url + "/" + id, function(err, res, result) {
 
-				expect(result.deletedAll).to.be.ok();
+        expect(err).not.to.be.ok();
+        expect(res.statusCode).to.be(500);
 
-				request.get(url, function (err2, res2, result2) {
+        done();
 
-					expect(err2).not.to.be.ok();
-					expect(res2.statusCode).to.be(200);
+      }).json()
 
-					expect(result2).to.be.empty()
-
-					done();
-
-				}).json()
-
-			}).json();
-
-		});
+    });
 
 
-	};
+
+    it('#removeAll', function(done) {
+
+      var url = baseUrl;
+
+      request.del(url, function(err, res, result) {
+
+        expect(err).not.to.be.ok();
+        expect(res.statusCode).to.be(200);
+
+        expect(result.deletedAll).to.be.ok();
+
+        request.get(url, function(err2, res2, result2) {
+
+          expect(err2).not.to.be.ok();
+          expect(res2.statusCode).to.be(200);
+
+          expect(result2).to.be.empty()
+
+          done();
+
+        }).json()
+
+      }).json();
+
+    });
+
+
+  };
 
 }());

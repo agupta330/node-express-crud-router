@@ -1,7 +1,7 @@
 {
   "name": "express-mongodb-crud",
-  "version": "0.0.2",
-  "main": "lib/router.js",
+  "version": "0.2.0",
+  "main": "lib/ResourceBuilder.js",
   "description": "An express-mongodb-CRUD (create-read-update-delete) generic router",
   "homepage": "http://github.io/express-mongodb-crud",
   "bugs": "http://github.io/express-mongodb-crud/issues",

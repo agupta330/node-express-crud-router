@@ -1,21 +1,45 @@
 An express-mongodb-CRUD (create-read-update-delete) generic router
 
-## Install
+Install
+-------
 
-Latest stable version:<br>
-`npm install https://github.com/DennisAhaus/express-mongodb-crud/tarball/master --save`
+Latest stable version:<br>`npm install https://github.com/DennisAhaus/express-mongodb-crud/tarball/master --save`
 
-Selected version: <br>
-`npm install https://github.com/DennisAhaus/express-mongodb-crud/tarball/[version] --save`<br>
-Example: https://github.com/DennisAhaus/express-mongodb-crud/tarball/0.0.1<br>
-> For the list of available versions see <br> https://github.com/DennisAhaus/express-mongodb-crud/releases
+Selected version: <br>`npm install https://github.com/DennisAhaus/express-mongodb-crud/tarball/[version] --save`<br> Example: https://github.com/DennisAhaus/express-mongodb-crud/tarball/0.0.1<br> > For the list of available versions see <br> https://github.com/DennisAhaus/express-mongodb-crud/releases
 
-## Getting started
+Getting started
+---------------
 
-First you have to install node.js and mongodb. After adding the router
-to express (expressjs.com) you can use the rest based CRUD api.
+First you have to install node.js and mongodb. After adding the router to express (expressjs.com) you can use the rest based CRUD api.
 
 ### Usage
+
+#### Create model data:
+
+Create a new folder where your model can be exist in. Create a subfolder yourModelName. In that sub folder create yourModel.js and a yourModel.json.
+
+Your model.json shoulf contain the Schema definition:
+
+```js
+{
+  name: {
+    type String,
+    required:true
+    }
+}
+```
+
+The yourModel.js should export a function like this:
+
+```js
+module.exports = funtion(router, model){
+  //...
+}
+
+
+```
+
+The express router and the datasource is injected. For a mongodb datasoure the injected model will be the original mongoose model.
 
 ```js
 
@@ -26,19 +50,18 @@ var mongoose = require('mongoose');
 // create express server
 var app = express();
 
-// create the model
-var Schema = mongoose.Schema;
-var MySchema = new Schema({
-  name: "string",
-  desc: "string",
-});
-var MyModel = mongoose.model("MyModel", MySchema);
+// Create the crud router and give the model root
+// folder you have created before. The root folder here
+// is that folder which contains you models
+// folder name.
+var Resource = require('express-mongodb-crud');
+var resource = new Resource({
+  modelRootFolder: __dirname + '/models'
+})
 
-// create the crud router and add to express app
-var MyRouter = require('express-mongodb-crud');
-app.use("/MyModel", new MyRouter({
-  model: MyModel
-}));
+// Add the resource router to express app
+app.use("/api", resource.router("yourModelName"));
+
 
 app.listen(3000, function () {
   done();
@@ -46,96 +69,107 @@ app.listen(3000, function () {
 
 ```
 
-After starting the server the rest interface will be available with url
-http://localhost:3000/MyModel.
-
+After starting the server the rest interface will be available with url http://localhost:3000/api/YourModelname.
 
 ### REST API
 
-* `http://yourServer:port/YourModel/[?skip=<int>&limit=<int>]`
-  * GET --> Get list of available models
-    * skip param skips <int> models from the top of the result list
-    * skip default is 0
-    * limit param limits <int> models from the bottom of the result list
-    * limit default is 25
-    * Returns an array of available models
+-	`http://yourServer:port/api/YourModelName/[?skip=<int>&limit=<int>]`
 
-  * PUT --> Create new model
-    * Returns the created model
+	-	GET --> Get list of available models
 
-  * POST --> Search with criterias
-    * HTTP BODY: {&lt;mongoose search criteria&gt;}
-    * Returns the matching models
+		-	skip param skips <int> models from the top of the result list
+		-	skip default is 0
+		-	limit param limits <int> models from the bottom of the result list
+			-	limit default is 25
+			-	Returns an array of available models
 
-  * DELETE --> Delete all available models
+	-	PUT --> Create new model
 
-* `http://yourServer:port/YourModel/<model-id>`
-  * GET --> Get the referenced model
-  * DELETE --> Delete the referenced model
-  * POST --> Update the referenced model
-  * PUT --> Update the referenced model
+		-	Returns the created model
 
-* `http://yourServer:port/YourModel/config`
-  * POST, PUT -->  Update configuration
-    * {loglevel:"DEBUG|INFO"}
-  * GET -->  Get the model configuration
-    * returns JSON {loglevel:"DEBUG|INFO"}
+	-	POST --> Search with criterias
+
+		-	HTTP BODY: {&lt;mongoose search criteria&gt;\}
+
+		-	Returns the matching models
+
+	-	DELETE --> Delete all available models
+
+-	`http://yourServer:port/YourModel/<model-id>`
+
+	-	GET --> Get the referenced model
+	-	DELETE --> Delete the referenced model
+	-	POST --> Update the referenced model
+	-	PUT --> Update the referenced model
 
 ### API usage examples
 
-* `GET http://server:port/modelName`
-  * returns JSON [{&lt;your model&gt;}, {&lt;your model&gt;}, ...]
+-	`GET http://server:port/modelName`
 
-* `GET http://server:port/modelName?skip=10&limit=5`
-  * returns JSON [{&lt;your model&gt;}, {&lt;your model&gt;}, ...].
-    The first 10 items will be skipped (not part of the result) and
-    only 5 items will be returned. This also depends on the amount of
-    available data. If there are only 3 items in database [] will be returned
-    because of skipping parameter will skip the first 10 items.
+	-	returns JSON [{&lt;your model&gt;}, {&lt;your model&gt;}, ...]
 
-* `GET http://server:port/modelName/<modelId>`
-  * returns JSON {&lt;your model&gt;}
+-	`GET http://server:port/modelName?skip=10&limit=5`
 
-* `DELETE http://server:port/modelName/<modelId>`
-  * returns JSON {&lt;your model&gt;, "deleted":"true"}
+	-	returns JSON [{&lt;your model&gt;}, {&lt;your model&gt;}, ...]. The first 10 items will be skipped (not part of the result) and only 5 items will be returned. This also depends on the amount of available data. If there are only 3 items in database [] will be returned because of skipping parameter will skip the first 10 items.
 
-* `POST http://server:port/modelName/<modelId>` body: {new data}
-  * returns JSON {&lt;your model with new data&gt;}
+-	`GET http://server:port/modelName/<modelId>`
 
-* `POST http://server:port/modelName/config` body: {loglevel:"DEBUG"}
-  * returns JSON {loglevel:"DEBUG"}, updates the model configuration
+	-	returns JSON {&lt;your model&gt;\}
 
-## Testing
+-	`DELETE http://server:port/modelName/<modelId>`
 
-`npm test`
+	-	returns JSON {&lt;your model&gt;, "deleted":"true"}
 
+-	`POST http://server:port/modelName/<modelId>` body: {new data}
 
-## Contributing
+	-	returns JSON {&lt;your model with new data&gt;\}
 
-New contributors are welcome. Just send an email.
+-	`POST http://server:port/modelName/config` body: {loglevel:"DEBUG"}
 
-## Maintainers
+	-	returns JSON {loglevel:"DEBUG"}, updates the model configuration
 
-* Dennis Ahaus (dennisahaus.github.io)
+Testing
+-------
 
-## Change log
+`npm test` with mocha
 
-* 0.0.2
-  * Fix issue#1 https://github.com/DennisAhaus/express-mongodb-crud/issues/1
-  * Create new test lib struc for better maintainence of tests
-* 0.0.1
-  * Initial release
+Contributing
+------------
 
-## Roadmap
+New contributors are welcome.
 
-* API to CRUD new models
-  * Create API to CRUD new models
-  * Create as additional API beside of code based model creation
+Maintainers
+-----------
 
+-	Dennis Ahaus (dennisahaus.github.io)
 
-## License
+Change log
+----------
 
-Copyright (c) 2014
-Licensed under the MIT license.
+-	0.1.0
+
+	-	Remove config model
+	-	Create new router (ResourceBuilder) API
+	-	Now you have to create the models by declaration
+	-	The router and the model are injected in yourModel.js. Here you are able to create custom methods
+
+-	0.0.2
+
+	-	Fix issue#1 https://github.com/DennisAhaus/express-mongodb-crud/issues/1
+	-	Create new test lib struc for better maintainence of tests
+
+-	0.0.1
+
+	-	Initial release
+
+Roadmap
+-------
+
+-	Create API inspectacle api for browser based resources
+
+License
+-------
+
+Copyright (c) 2014 Licensed under the MIT license.
 
 https://github.com/DennisAhaus/express-mongodb-crud/blob/master/LICENSE.md
