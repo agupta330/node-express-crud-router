@@ -1,17 +1,16 @@
 {
-  "name": "express-mongodb-crud",
-  "version": "0.2.0",
-  "main": "lib/ResourceBuilder.js",
-  "description": "An express-mongodb-CRUD (create-read-update-delete) generic router",
-  "homepage": "http://github.io/express-mongodb-crud",
-  "bugs": "http://github.io/express-mongodb-crud/issues",
+  "name": "node-mongodb-crud",
+  "version": "0.3.0",
+  "description": "An mongodb crud (create-read-update-delete) generic express router",
+  "homepage": "http://github.io/node-mongodb-crud",
+  "bugs": "http://github.io/node-mongodb-crud/issues",
   "author": {
     "name": "Dennis Ahaus",
     "email": "dennis.ahaus@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DennisAhaus/express-mongodb-crud"
+    "url": "https://github.com/DennisAhaus/node-mongodb-crud"
   },
   "license": "MIT",
   "files": [
@@ -30,7 +29,7 @@
     "mocha": "^1.21.4"
   },
   "scripts": {
-    "test": "mocha ./test/suite.js"
+    "test": "mocha ./test/**.test.js"
   },
   "preferGlobal": "false",
   "dependencies": {
