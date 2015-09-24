@@ -33,7 +33,7 @@
       done(err);
     });
 
-    mongoose.connect('mongodb://localhost/test');
+    mongoose.connect('mongodb://localhost/node-express-crud-router-test');
 
     var userSchema = new Schema(fixtures.defaultModelSchemaJson);
     userSchema

@@ -14,13 +14,17 @@
   },
   "license": "MIT",
   "files": [
-    "lib"
+    "lib",
+    "*.md",
+    "LICENSE",
+    "index.js"
   ],
   "keywords": [
     "express",
-    "CRUD",
+    "crud",
     "router",
-    "controller"
+    "controller",
+    "rest"
   ],
   "devDependencies": {
     "body-parser": "^1.14.0",
@@ -36,7 +40,9 @@
   },
   "scripts": {
     "test": "gulp test",
-    "commit": "git add --all && git commit"
+    "commit": "git add --all && git commit",
+    "version": "git add --all",
+    "postversion": "git push && git push --tags"
   },
   "preferGlobal": "false",
   "dependencies": {
