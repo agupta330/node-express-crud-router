@@ -1,6 +1,6 @@
 {
   "name": "node-express-crud-router",
-  "version": "1.2.0",
+  "version": "1.1.0",
   "description": "An node.js express crud (create-read-update-delete) generic router",
   "homepage": "http://node-express-crud-router.github.io/",
   "bugs": "https://github.com/DennisAhaus/node-express-crud-router/issues",
@@ -43,6 +43,9 @@
     "test": "gulp test",
     "commit": "git add --all && git commit",
     "version": "git add --all",
+    "prerelease": "git checkout master && git merge dev",
+    "release": "npm version ",
+    "postrelease": "git checkout dev && git merge master && git push",
     "postversion": "git push && git push --tags"
   },
   "preferGlobal": "false",
