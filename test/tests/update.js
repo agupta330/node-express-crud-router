@@ -3,7 +3,6 @@
 
   var expect = require('expect');
   var fixtures = require("../fixtures.js");
-  var logger = require("../../lib/logger.js");
 
   var defaultModelData = fixtures.defaultModelData;
   var baseUrl = fixtures.baseUrl;
@@ -13,79 +12,60 @@
   module.exports = function() {
 
     beforeEach(function(done) {
-      request.put(baseUrl, function(err, res, result) {
 
-        expect(err).not.to.be.ok();
-        expect(res.statusCode).to.be(200);
+      var obj = defaultModelData;
+      var url = fixtures.baseUrl;
 
-        done();
-
-      }).json(testModelData);
-    });
-
-
-    it('#update - with valid data', function(done) {
-
-      var url = baseUrl;
-
-      request.get(url, function(err, res, result) {
-
-        expect(err).not.to.be.ok();
-        expect(res.statusCode).to.be(200);
-
-        var item = result[0];
-        var id = item._id;
-        var updateData = {};
-        updateData.name = "My updated testmodel name";
-
-        request.post(url + "/" + id, function(err, res, result) {
-
-          expect(err).not.to.be.ok();
-          expect(res.statusCode).to.be(200);
-
-          expect(result.name).to.be.ok();
-          expect(result.name).to.be(updateData.name);
-
+      fixtures
+        .request({
+          url: url,
+          method: "post",
+          json: defaultModelData
+        })
+        .then(function(result) {
+          expect(result._id).toExist("Property _id does not exist");
+          expect(result.name).toBe(obj.name, "Property name does not match " + obj.name);
+          expect(result.desc).toBe(obj.desc);
+          expect(result.ident).toBe(obj.ident);
+          currentDocument = result;
+        })
+        .then(function() {
           done();
-
-        }).json(updateData);
-
-      }).json();
+        })
+        .catch(function(err) {
+          done(err);
+        })
 
     });
 
 
-    it('#update - with invalid data', function(done) {
+    it(' - should update with valid data', function(done) {
 
-      var url = baseUrl;
+      var url = baseUrl + "/" + currentDocument._id;
 
-      request.get(url, function(err, res, result) {
+      var updateData = {};
+      updateData.name = "My updated testmodel name";
 
-        expect(err).not.to.be.ok();
-        expect(res.statusCode).to.be(200);
-
-        var item = result[0];
-        var id = item._id;
-        var updateData = {};
-        updateData.name = "My updated testmodel name";
-
-        request.post(url + "/" + id, function(err, res, result) {
-
-          expect(err).not.to.be.ok();
-          expect(res.statusCode).to.be(200);
-
-          expect(result.name).to.be.ok();
-          expect(result.name).to.be(updateData.name);
-
+      fixtures
+        .request({
+          url: url,
+          method: "put",
+          json: updateData
+        })
+        .then(function(result) {
+          expect(result._id).toBe(currentDocument._id);
+          expect(result.desc).toBe(currentDocument.desc);
+          expect(result.ident).toBe(currentDocument.ident);
+          expect(result.name).toBe(updateData.name);
+        })
+        .then(function() {
           done();
-
-        }).json(updateData);
-
-      }).json();
+        })
+        .catch(function(err) {
+          done(err);
+        })
 
     });
-
-
 
   };
 
