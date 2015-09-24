@@ -46,7 +46,6 @@ var opts = {
 The default router is expecting a defined api on the model. This api is derived from mongoose model api.
 
 ### Expected model api
-
 Since this implementation is heaviliy influenced by mongoose project (and was intended to be used with mongodb at first time) we use that api as default. But you welcome to implement your own model api where you can delegate the operations to another persistence api. here is the api your model have to implement:
 
 ```js
@@ -61,6 +60,7 @@ model
 // Find models by criteria with limit and skip options
 model
   .find({...})
+  .sort({...})
   .skip(int)
   .limit(int)
   .exec(function (err, result) {
@@ -94,17 +94,17 @@ model.findById(id,
 
       })
     })
-
 ```
 
 If you provide such a model you can use your own operations on crud request to the router.
 
 ### REST API
-#### All models: `http://yourServer:port/api/YourModelName/[?skip=<int>&limit=<int>&criteria=<JSON>]`
+#### All models: `http://yourServer:port/api/YourModelName/[?skip=<int>&limit=<int>&criteria=<JSON>&sort=<JSON>]`
 --> GET: Get list of available models
-- skips <int> models from the top of the result list. Default is 0
-- limits the amount of retruning models to <limit>. Default is 25
-- criteria is a json doc filter the result with a query
+- skip: skips <int> models from the top of the result list. Default is 0
+- limit: limits the amount of retruning models to <limit>. Default is 25
+- criteria: criteria is a json doc filter the result with a query
+- sort: sorts the result output by given json doc criteria
 - Returns an array of available models
 
 --> PUT/POST: Create new model

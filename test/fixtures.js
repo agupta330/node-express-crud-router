@@ -25,6 +25,11 @@
       type: "string",
       required: true
     },
+		counter: {
+			type: "number",
+			required: false,
+			"default": 1
+		},
     ident: {
       type: "string",
       required: true,
@@ -35,7 +40,8 @@
   exports.defaultModelData = {
     name: "TestModel",
     desc: "TestModel description",
-    ident: "TestAbcdef123Qwe"
+    ident: "TestAbcdef123Qwe",
+		counter: 1
   }
 
   exports.port = 31313;

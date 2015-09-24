@@ -3,6 +3,7 @@
 
   var expect = require('expect');
   var fixtures = require("../fixtures.js");
+  var us = require('underscore');
 
   var defaultModelData = fixtures.defaultModelData;
   var baseUrl = fixtures.baseUrl;
@@ -72,6 +73,76 @@
         .then(function(result) {
           expect(result).toBeAn("array");
           expect(result[0]).toEqual(currentDocument);
+        })
+        .then(function() {
+          done();
+        })
+        .catch(function(err) {
+          done(err);
+        })
+
+    });
+
+    it(' - should return documents in different sort orders', function(done) {
+
+      var data = us.clone(defaultModelData);
+
+      var qs = {
+        sort: {
+          counter: "asc"
+        }
+      };
+
+      fixtures.request({
+          url: baseUrl,
+          method: "put",
+          json: data
+        })
+        .then(function () {
+          data.counter++
+        })
+        .then(function () {
+          return fixtures.request({
+              url: baseUrl,
+              method: "put",
+              json: data
+            })
+        })
+        .then(function () {
+          data.counter++
+        })
+        .then(function () {
+          return fixtures.request({
+              url: baseUrl,
+              method: "put",
+              json: data
+            })
+        })
+        .then(function () {
+          qs.sort.counter = "asc";
+          return fixtures.request({
+              url: baseUrl,
+              method: "get",
+              json: true,
+              qs: qs
+            })
+        })
+        .then(function(result) {
+          expect(result).toBeAn("array");
+          expect(result[0].counter).toBe(1);
+        })
+        .then(function () {
+          qs.sort.counter = "desc";
+          return fixtures.request({
+              url: baseUrl,
+              method: "get",
+              json: true,
+              qs: qs
+            })
+        })
+        .then(function(result) {
+          expect(result).toBeAn("array");
+          expect(result[0].counter).toBe(3);
         })
         .then(function() {
           done();

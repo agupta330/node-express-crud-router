@@ -36,7 +36,8 @@
     "mocha": "^1.21.5",
     "mongoose": "^3.8.35",
     "request": "^2.63.0",
-    "string": "^3.3.1"
+    "string": "^3.3.1",
+    "underscore": "^1.8.3"
   },
   "scripts": {
     "test": "gulp test",

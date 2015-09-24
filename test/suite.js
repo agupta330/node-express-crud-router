@@ -73,10 +73,26 @@
         });
     });
 
+    new Promise(function(resolve) {
+        server = app.listen(port, function() {
+          resolve();
+        });
 
-    server = app.listen(port, function() {
-      done();
-    });
+      })
+      .then(function() {
+        return fixtures
+          .request({
+            url: fixtures.baseUrl,
+            method: "delete",
+            json: true
+          })
+      })
+      .then(function() {
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      })
 
   });
 
@@ -106,7 +122,7 @@
   function exit(done, err) {
     mongoose.disconnect();
     server.close();
-    if(err) return done(err);
+    if (err) return done(err);
     done();
   }
 
