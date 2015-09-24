@@ -1,50 +1,67 @@
 (function() {
-	"use strict";
+  "use strict";
 
-	var express = require("express");
-	var bodyParser = require("body-parser");
-	var logger = require("../lib/logger.js");
+  var express = require("express");
+  var bodyParser = require("body-parser");
+  var expect = require('expect');
+	var request = require('request');
 
-	var app = express();
+  var app = express();
 
-	app.set("json spaces", 2);
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }));
 
-	app.use(bodyParser.urlencoded({
-		extended: false
-	}));
+  app.use(bodyParser.json());
 
-	app.use(bodyParser.json());
+  exports.app = app;
 
-	app.use(function(err, req, res, next) {
-		logger.error(err);
-	})
+  exports.defaultModelSchemaJson = {
+    name: {
+      type: "string",
+      required: true
+    },
+    desc: {
+      type: "string",
+      required: true
+    },
+    ident: {
+      type: "string",
+      required: true,
+      "default": "TestAbcdef123Qwe"
+    },
+  }
 
-	exports.TestApp = app;
+  exports.defaultModelData = {
+    name: "TestModel",
+    desc: "TestModel description",
+    ident: "TestAbcdef123Qwe"
+  }
 
-	var ResourceBuilder = require(__dirname + "/../lib/ResourceBuilder.js");
+  exports.port = 31313;
+  exports.host = "localhost";
+  exports.path = "/api/users";
+  exports.baseUrl = "http://" + exports.host + ":" + exports.port + exports.path;
 
-	var r = new ResourceBuilder({
-		modelRootFolder: __dirname + '/models',
-	})
+  exports.request = function doRequest(opts) {
 
-	app.use("/api", r.router("users"));
+    return new Promise(function(resolve, reject) {
 
-	exports.TestModelData = {
-		name: "TestModel",
-		desc: "TestModel description",
-		ident: "TestAbcdef123Qwe"
-	}
+      request(opts, function(err, res, result) {
 
-	function Connection() {
-		this.port = 31313;
-		this.host = "localhost";
-		this.path = "api/users";
-		this.getBaseUrl = function() {
-			return "http://" + this.host + ":" + this.port + "/" + this.path;
-		}
-	};
+        try {
+          expect(err).toNotExist();
+          expect(res.statusCode).toBe(200);
+          return resolve(result);
+        } catch (err) {
+					err.response = res
+					err.body = result;
+          return reject(err);
+        }
 
-	exports.host = new Connection();
+      });
 
+    });
+  }
 
 }());

@@ -1,93 +1,120 @@
 (function() {
   "use strict";
 
-  var expect = require('expect.js');
+  var expect = require('expect');
   var fixtures = require("./fixtures.js");
-  var logger = require("../lib/logger.js");
   var request = require("request");
   var mongoose = require("mongoose");
+  var Schema = require('mongoose').Schema;
+  var RouterFactory = require("../index.js").RouterFactory;
+  var S = require('string');
 
   var server;
 
-  var testData = fixtures.TestModelData;
-  var baseUrl = fixtures.host.getBaseUrl();
-  var port = fixtures.host.port;
-
-  // logger.setLevel("DEBUG");
+  var defaultModelData = fixtures.defaultModelData;
+  var baseUrl = fixtures.baseUrl;
+  var port = fixtures.port;
 
 
-  describe('Model creation', require("./tests/create-test.js"));
-  describe('Model search', require("./tests/find-test.js"));
-  describe('Model update', require("./tests/update-test.js"));
-  describe('Model removal', require("./tests/remove-test.js"));
+  describe('Model creation (create)', require("./tests/create.js"));
+  describe('Model selection (read)', require("./tests/read.js"));
+  describe('Model deletion (delete)', require("./tests/delete.js"));
+  // describe('Model update', require("./tests/update-test.js"));
 
 
   before(function(done) {
 
     mongoose.set("debug", false);
-    mongoose.connect('mongodb://localhost/test');
+
     var db = mongoose.connection;
-    db.on('error', function(argument) {
-      // body...
-    });
-    db.once('open', function(callback) {
-      console.log("mongoose connection works");
+
+    db.on('error', function(err) {
+      console.error(err);
+      done(err);
     });
 
-    var app = fixtures.TestApp;
-    var TestModel = fixtures.TestModel;
+    mongoose.connect('mongodb://localhost/test');
+
+    var userSchema = new Schema(fixtures.defaultModelSchemaJson);
+    userSchema
+      .virtual("id")
+      .get(function() {
+        return this._id;
+      })
+
+    var userModel = mongoose.model("user", userSchema);
+    var userRouter = RouterFactory.create({
+      path: "users",
+      model: userModel
+    });
+
+    var app = fixtures.app;
+
+    app.use("/api", userRouter);
 
     app.use(function(err, req, res, next) {
-      res.status(500).json({
-        statusCode: 500,
-        message: err.toString()
-      });
+
+      // console.error("----------------- EXPRESS ERROR ---------------");
+      // console.error("Express error: ", err.message);
+      // console.error("Express error stack: ", err.stack);
+      // console.error("Express error stack: ", err.name);
+      // console.error("-----------------------------------------------");
+
+      var code = err.code || 500;
+
+      if (S(err.message).startsWith("CastError")) {
+        code = 400;
+      }
+      res
+        .status(code)
+        .json({
+          code: code,
+          message: err.toString()
+        });
     });
 
+
     server = app.listen(port, function() {
-
-      request.put(baseUrl, function(err, res, result) {
-
-        expect(err).not.to.be.ok();
-        expect(res.statusCode).to.be(200);
-
-        done();
-
-      }).json(testData);
-
+      done();
     });
 
   });
-
 
 
   after(function(done) {
 
     this.timeout(3000);
 
-    var url = baseUrl;
-    var search = {
-      "ident": testData.ident
+    var opts = {
+      url: fixtures.baseUrl,
+      method: "get",
+      qs: {
+        filter: {
+          "ident": defaultModelData.ident
+        }
+      },
+      json: true
     }
 
-    request.post(url, function(err, res, result) {
+    request(opts, function(err, res, result) {
 
-      expect(err).not.to.be.ok();
-      expect(res.statusCode).to.be(200);
+      expect(err).toNotExist("Expect request error to not exist");
+      expect(res.statusCode).toBe(200, "Expect http status code to be 200 but was " + res.statusCode);
+      expect(result).toBeAn("array", "Expect response result to be an array but was: " + (typeof result));
 
       var counter = 0;
 
       if (result.length === 0) {
-        done();
+        exit(done);
       } else {
         result.forEach(function(item) {
-          request.del(url + "/" + item._id, function(err2, res2,
-            result2) {
-            expect(err2).not.to.be.ok();
-            expect(res2.statusCode).to.be(200);
+          var url = opts.url + "/" + item._id;
+          request.del(url, function(err2, res2, result2) {
+            expect(err2).toNotExist("Error while request to delete single item");
+            expect(res2.statusCode).toBe(200);
             counter++;
             if (counter === result.length) {
-              done();
+              exit(done);
             }
           });
 
@@ -95,9 +122,15 @@
 
       }
 
-    }).json(search);
+    });
 
   });
+
+  function exit(done) {
+    mongoose.disconnect();
+    server.close();
+    done();
+  }
 
 
 }());

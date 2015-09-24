@@ -1,13 +1,13 @@
 (function() {
   "use strict";
 
-  var expect = require('expect.js');
+  var expect = require('expect');
   var fixtures = require("../fixtures.js");
   var logger = require("../../lib/logger.js");
-  var request = require("request");
 
-  var testModelData = fixtures.TestModelData;
-  var baseUrl = fixtures.host.getBaseUrl();
+  var defaultModelData = fixtures.defaultModelData;
+  var baseUrl = fixtures.baseUrl;
+  var currentDocument;
 
 
   module.exports = function() {
