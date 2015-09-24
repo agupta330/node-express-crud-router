@@ -1,6 +1,10 @@
 # A node.js express generic crud router / controller
+
+[![Build Status](https://travis-ci.org/DennisAhaus/node-express-crud-router.svg)](https://travis-ci.org/DennisAhaus/node-express-crud-router)
+
 ## Install
-Latest stable version:<br>`npm install https://github.com/DennisAhaus/node-express-crud-router/tarball/master --save`
+
+`npm install node-express-crud-router`
 
 ## Getting started
 ### Create a crud router
