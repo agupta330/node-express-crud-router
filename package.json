@@ -41,7 +41,7 @@
     "commit": "git add --all && git commit",
     "version": "git add --all",
     "postversion": "git push && git push --tags",
-    "prerelease": "git checkout master && git merge dev && gulp test",
+    "prerelease": "gulp test && git checkout master && git merge dev",
     "release": "npm version ",
     "postrelease": "git checkout dev && git merge master && git push"
   },
