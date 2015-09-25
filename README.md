@@ -1,6 +1,8 @@
 # A node.js express generic crud router / controller
 
-[![Build Status](https://travis-ci.org/DennisAhaus/node-express-crud-router.svg)](https://travis-ci.org/DennisAhaus/node-express-crud-router)
+[![Build status](https://travis-ci.org/DennisAhaus/node-express-crud-router.svg)](https://travis-ci.org/DennisAhaus/node-express-crud-router)
+
+![Dependencies](https://david-dm.org/DennisAhaus/node-express-crud-router.svg)
 
 ## Install
 
