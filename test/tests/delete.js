@@ -3,7 +3,7 @@
 
   var expect = require('expect');
   var fixtures = require("../fixtures.js");
-  var request = require("request");
+  var supertest = require('supertest');
 
   var defaultModelData = fixtures.defaultModelData;
   var baseUrl = fixtures.baseUrl
@@ -17,26 +17,24 @@
 
       var data = defaultModelData;
 
-      request.post(url, function(err, res, result) {
+      supertest(fixtures.app)
+        .post("/api/users")
+        .expect(200)
+        .send(data)
+        .end(function(err1, res) {
 
-        expect(err).toNotExist();
-        expect(res.statusCode).toBe(200);
+          supertest(fixtures.app)
+            .delete("/api/users/" + res.body._id)
+            .expect(200)
+            .expect(function(res) {
+              expect(res.body.model.name).toBe(data.name);
+              expect(res.body.deleted).toBe(true);
+            })
+            .end(function(err2) {
+              done(err1 || err2);
+            })
 
-        var id = result._id;
-
-        request.del(url + "/" + id, function(err2, res2, result2) {
-
-          expect(err2).toNotExist();
-          expect(res2.statusCode).toBe(200);
-
-          expect(result2.model._id).toBe(id);
-          expect(result2.deleted).toBe(true);
-
-          done();
-
-        }).json()
-
-      }).json(data);
+        });
 
     });
 
@@ -45,16 +43,13 @@
     it(' - should return http 400 because of invalid objectId', function(done) {
 
       var url = baseUrl;
-      var id = "InvalidId";
 
-      request.del(url + "/" + id, function(err, res, result) {
-
-        expect(err).toNotExist();
-        expect(res.statusCode).toBe(400);
-
-        done();
-
-      }).json()
+      supertest(fixtures.app)
+        .delete("/api/users/invalid")
+        .expect(400)
+        .end(function(err) {
+          done(err);
+        })
 
     });
 
@@ -64,26 +59,19 @@
 
       var url = baseUrl;
 
-      request.del(url, function(err, res, result) {
+      supertest(fixtures.app)
+        .delete("/api/users")
+        .expect(200)
+        .end(function(err1, res) {
 
-        expect(err).toNotExist();
-        expect(res.statusCode).toBe(200);
+          supertest(fixtures.app)
+            .get("/api/users")
+            .expect(200, [])
+            .end(function(err2) {
+              done(err1 || err2);
+            })
 
-        expect(result).toBeAn("array");
-        expect(result.length).toBe(0);
-
-        request.get(url, function(err2, res2, result2) {
-
-          expect(err2).toNotExist();
-          expect(res2.statusCode).toBe(200);
-          expect(result2).toBeAn("array");
-          expect(result2.length).toBe(0);
-
-          done();
-
-        }).json()
-
-      }).json();
+        });
 
     });
 

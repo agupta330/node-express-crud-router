@@ -3,7 +3,7 @@
 
   var expect = require('expect');
   var fixtures = require("../fixtures.js");
-  var request = require("request");
+  var supertest = require('supertest');
 
   var defaultModelData = fixtures.defaultModelData;
   var baseUrl = fixtures.baseUrl
@@ -18,24 +18,20 @@
 
       var obj = defaultModelData;
 
-      fixtures
-        .request({
-          url: url,
-          method: "post",
-          json: defaultModelData
-        })
-        .then(function(result) {
+      supertest(fixtures.app)
+        .post("/api/users")
+        .expect(200)
+        .expect(function(res) {
+          var result = res.body;
           expect(result._id).toExist("Property _id does not exist");
           expect(result.name).toBe(obj.name, "Property name does not match " + obj.name);
           expect(result.desc).toBe(obj.desc);
           expect(result.ident).toBe(obj.ident);
         })
-        .then(function() {
-          done();
-        })
-        .catch(function(err) {
+        .send(defaultModelData)
+        .end(function(err, res) {
           done(err);
-        })
+        });
 
     });
 
@@ -49,21 +45,13 @@
         ident: defaultModelData.ident
       };
 
-			var url = baseUrl;
-
-      fixtures
-        .request({
-          url: url,
-          method: "post",
-          json: obj
-        })
-        .then(function() {
-          done(new Error("Code should not be executed"));
-        })
-        .catch(function(err) {
-          expect(err.response.statusCode).toBe(400);
-          done();
-        })
+      supertest(fixtures.app)
+        .post("/api/users")
+        .expect(400)
+        .send(obj)
+        .end(function(err, res) {
+          done(err);
+        });
 
 
     });

@@ -4,6 +4,7 @@
   var expect = require('expect');
   var fixtures = require("../fixtures.js");
   var us = require('underscore');
+  var supertest = require('supertest');
 
   var defaultModelData = fixtures.defaultModelData;
   var baseUrl = fixtures.baseUrl;
@@ -34,22 +35,12 @@
 
     it(' - should return single document by its id', function(done) {
 
-      var url = baseUrl + "/" + currentDocument._id;
-
-      fixtures.request({
-          url: url,
-          method: "get",
-          json: true
-        })
-        .then(function(result) {
-          expect(result).toEqual(currentDocument);
-        })
-        .then(function() {
-          done();
-        })
-        .catch(function(err) {
+      supertest(fixtures.app)
+        .get("/api/users/"+currentDocument._id)
+        .expect(200, currentDocument)
+        .end(function(err, res) {
           done(err);
-        })
+        });
 
     });
 
