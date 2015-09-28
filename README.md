@@ -14,6 +14,10 @@ Please open an issue for bugs and/or enhancement requests here https://github.co
 
 As much issues we get as much we can improve this implementation.
 
+#### Roadmap
+Please have a look at
+https://github.com/DennisAhaus/node-express-crud-router/milestones to see the upcoming roadmap/milestones
+
 ## Getting started
 ### Create a crud router
 We use mongoose schema as model but you can also use another model definition as well. We will refer to that later on.
