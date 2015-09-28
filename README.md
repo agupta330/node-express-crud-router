@@ -123,20 +123,36 @@ GET http://server:port/modelName
 ]
 ```
 
-#### PUT,POST /modelName
+#### POST /modelName
 - Creates (persists) the provided http body
 - Returns the persisted model object with new id property assigned
 
 Example
 
 ```js
-PUT http://server:port/modelName
+POST http://server:port/modelName
 {'name':'test'}
 
 // Returns
 {
   _id: ..., // in case of mongodb usage
   name: 'test'
+}
+```
+
+#### PUT /modelName?criteria=&lt;JSON&gt;
+- Updates all entities found by criteria (bulk update)
+- Returns the number of affected entities
+
+Example
+
+```js
+PUT http://server:port/modelName?criteria=<JSON>
+{'name':'test'}
+
+// Returns
+{
+  numberAffected: ...
 }
 ```
 
@@ -147,11 +163,28 @@ PUT http://server:port/modelName
 Example
 
 ```js
-DELTE http://server:port/modelName
+DELETE http://server:port/modelName
 
 // Returns
 []
 ```
+
+#### DELETE /model?criteria=&lt;JSON&gt;
+- Deletes all available models selected by criteria (bulk delete)
+- Returns deleted models
+
+Example
+
+```js
+DELETE http://server:port/modelName
+
+// Returns
+{
+  numberAffected: ...
+}
+```
+
+------
 
 #### GET /modelName/modelId
 - Returns single model JSON object referenced by the modelId
@@ -233,6 +266,13 @@ model
 // Update single model data
 model
   .findByIdAndUpdate(id,{update data})
+    .exec(function(err, result) {
+
+    })
+
+// Update bulk data
+model
+  .update({criteria},{update data}, {options}) // options: {multi: true}
     .exec(function(err, result) {
 
     })
