@@ -6,14 +6,10 @@
   var supertest = require('supertest');
 
   var defaultModelData = fixtures.defaultModelData;
-  var baseUrl = fixtures.baseUrl
-
 
   module.exports = function() {
 
     it(' - should delete existing single document', function(done) {
-
-      var url = baseUrl;
 
       var data = defaultModelData;
 
@@ -42,8 +38,6 @@
 
     it(' - should return http 400 because of invalid objectId', function(done) {
 
-      var url = baseUrl;
-
       supertest(fixtures.app)
         .delete("/api/users/invalid")
         .expect(400)
@@ -56,8 +50,6 @@
 
 
     it(' - should remove all documents', function(done) {
-
-      var url = baseUrl;
 
       supertest(fixtures.app)
         .delete("/api/users")

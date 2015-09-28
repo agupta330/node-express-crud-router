@@ -7,7 +7,6 @@
   var supertest = require('supertest');
 
   var defaultModelData = fixtures.defaultModelData;
-  var baseUrl = fixtures.baseUrl;
   var currentDocument;
 
 
@@ -20,6 +19,7 @@
         .expect(200)
         .send(defaultModelData)
         .end(function(err, res) {
+          expect(res.body._id).toExist();
           currentDocument = res.body;
           done(err);
         });
@@ -57,118 +57,78 @@
 
     it(' - should return documents in different sort orders', function(done) {
 
-      var data = us.clone(defaultModelData);
+      var deleteAll = supertest(fixtures.app)
+        .delete('/api/users')
+        .expect(200, [])
 
-      var qs = {
-        sort: {
-          counter: "asc"
-        }
+      var data1 = us.clone(defaultModelData);
+
+      data1.counter = 888;
+      var add1 = supertest(fixtures.app)
+        .post('/api/users')
+        .expect(200)
+        .send(data1)
+
+
+      var data2 = us.clone(defaultModelData);
+
+      data2.counter = 999;
+      var add2 = supertest(fixtures.app)
+        .post('/api/users')
+        .expect(200)
+        .send(data2)
+
+      var sort1Param = {
+        counter: 'asc'
       };
 
-      fixtures.request({
-          url: baseUrl,
-          method: "put",
-          json: data
+      var sort1 = supertest(fixtures.app)
+        .get("/api/users/?sort=" + JSON.stringify(sort1Param))
+        .expect(200)
+        .expect(function(res) {
+          expect(res.body[0].counter).toBe(888);
         })
-        .then(function() {
-          data.counter++
+
+
+      var sort2Param = {
+        counter: 'desc'
+      };
+
+      var sort2 = supertest(fixtures.app)
+        .get("/api/users/?sort=" + JSON.stringify(sort2Param))
+        .expect(200)
+        .expect(function(res) {
+          expect(res.body[0].counter).toBe(999);
         })
-        .then(function() {
-          return fixtures.request({
-            url: baseUrl,
-            method: "put",
-            json: data
+
+      deleteAll.end(function(err0) {
+        add1.end(function(err1) {
+          add2.end(function(err2) {
+            sort1.end(function(err3) {
+              sort2.end(function(err4) {
+                done(err0 || err1 || err2 || err3 || err4 || null);
+              })
+            })
           })
         })
-        .then(function() {
-          data.counter++
-        })
-        .then(function() {
-          return fixtures.request({
-            url: baseUrl,
-            method: "put",
-            json: data
-          })
-        })
-        .then(function() {
-          qs.sort.counter = "asc";
-          return fixtures.request({
-            url: baseUrl,
-            method: "get",
-            json: true,
-            qs: qs
-          })
-        })
-        .then(function(result) {
-          expect(result).toBeAn("array");
-          expect(result[0].counter).toBe(1);
-        })
-        .then(function() {
-          qs.sort.counter = "desc";
-          return fixtures.request({
-            url: baseUrl,
-            method: "get",
-            json: true,
-            qs: qs
-          })
-        })
-        .then(function(result) {
-          expect(result).toBeAn("array");
-          expect(result[0].counter).toBe(3);
-        })
-        .then(function() {
-          done();
-        })
-        .catch(function(err) {
-          done(err);
-        })
+      })
 
     });
 
     it(' - should skip first document and return second document with limit 1', function(done) {
 
-      var url = baseUrl;
-
-      var qs = {
-        skip: 0,
-        limit: 10
+      var sort = {
+        counter: "desc"
       }
 
-      var firstDoc = null;
-      var secondDoc = null;
-
-      fixtures.request({
-          url: url,
-          method: "get",
-          json: true,
-          qs: qs
+      supertest(fixtures.app)
+        .get("/api/users/?skip=1&limit=1&sort=" + JSON.stringify(sort))
+        .expect(200)
+        .expect(function(res) {
+          expect(res.body.length).toBe(1);
+          expect(res.body[0].counter).toBe(888);
         })
-        .then(function(result) {
-          expect(result).toBeAn("array");
-          expect(result.length).toBeMoreThan(1);
-          firstDoc = result[0];
-          secondDoc = result[1];
-        })
-        .then(function() {
-          qs.skip = 1;
-          qs.limit = 1;
-          return fixtures.request({
-            url: url,
-            method: "get",
-            json: true,
-            qs: qs
-          })
-        })
-        .then(function(result) {
-          expect(result).toBeAn("array");
-          expect(result.length).toBe(1);
-          expect(result[0]).toNotEqual(firstDoc);
-          expect(result[0]).toEqual(secondDoc);
-        })
-        .then(function() {
-          done();
-        })
-        .catch(function(err) {
+        .end(function(err) {
           done(err);
         })
 

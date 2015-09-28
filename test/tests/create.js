@@ -6,15 +6,12 @@
   var supertest = require('supertest');
 
   var defaultModelData = fixtures.defaultModelData;
-  var baseUrl = fixtures.baseUrl
 
   module.exports = test;
 
   function test() {
 
     it(' - should create valid document with _id property', function(done) {
-
-      var url = baseUrl;
 
       var obj = defaultModelData;
 
