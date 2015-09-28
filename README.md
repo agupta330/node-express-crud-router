@@ -237,9 +237,9 @@ model
 
     })
 
-// Remove all models
+// Remove all models or by selection criteria (bulk delete)
 model
-  .remove()
+  .remove(null || <JSON criteria>)
   .exec(function(err) {
 
   })
