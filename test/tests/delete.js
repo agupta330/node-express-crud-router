@@ -112,37 +112,6 @@
           expect(res.body[0].counter).toBe(1);
         })
 
-      // var result = Bacon
-      // .once(true)
-      // .flatMap(function () {
-      //   return Bacon.fromNodeCallback(removeAll.end);
-      // })
-      // .flatMap(function () {
-      //   return Bacon.fromNodeCallback(add1.end);
-      // })
-      // .flatMap(function () {
-      //   return Bacon.fromNodeCallback(add2.end);
-      // })
-      // .flatMap(function () {
-      //   return Bacon.fromNodeCallback(add3.end);
-      // })
-      // .flatMap(function () {
-      //   return Bacon.fromNodeCallback(removeSelected.end);
-      // })
-      // .flatMap(function () {
-      //   return Bacon.fromNodeCallback(selectRest.end);
-      // })
-      //
-      // result.onError(function (err) {
-      //   done(err);
-      // })
-      //
-      // result.onEnd(function () {
-      //   done();
-      // })
-      //
-      // result.onValue();
-
       removeAll.end(function(err0) {
         add1.end(function(err1) {
           add2.end(function(err2) {
