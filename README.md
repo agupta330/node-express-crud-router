@@ -1,22 +1,18 @@
 # A node.js express generic crud router / controller
-
 [![Build status](https://travis-ci.org/DennisAhaus/node-express-crud-router.svg?branch=master)](https://travis-ci.org/DennisAhaus/node-express-crud-router)
 
 ![Dependencies](https://david-dm.org/DennisAhaus/node-express-crud-router.svg)
 
 ## Install
-
 `npm install node-express-crud-router`
 
 ## Issues and enhancements
-
-Please open an issue for bugs and/or enhancement requests here https://github.com/DennisAhaus/node-express-crud-router/issues.
+Please open an issue for bugs and/or enhancement requests here [https://github.com/DennisAhaus/node-express-crud-router/issues](https://github.com/DennisAhaus/node-express-crud-router/issues).
 
 As much issues we get as much we can improve this implementation.
 
-#### Roadmap
-Please have a look at
-https://github.com/DennisAhaus/node-express-crud-router/milestones to see the upcoming roadmap/milestones
+### Roadmap
+Please have a look at [https://github.com/DennisAhaus/node-express-crud-router/milestones](https://github.com/DennisAhaus/node-express-crud-router/milestones) to see the upcoming roadmap/milestones
 
 ## Getting started
 ### Create a crud router
@@ -57,8 +53,6 @@ var opts = {
 
 The default router is expecting a defined api on the model. This api is derived from mongoose model api.
 
-
-
 ## REST API
 ### Url schema
 
@@ -67,22 +61,22 @@ http://yourServer:port/api/<YourModelName>/<ModelId>?skip=<int>&limit=<int>&crit
 ```
 
 #### Url query parameters
-
 `skip=<int>`
 
-Skips &lt;int&gt; models from the top of the result list.
+Skips <int> models from the top of the result list.
 
 Example:
+
 ```js
 http://yourServer:port/api/yourModelName?skip=5
 ```
 
-
 `limit=<int>`
 
-Limits the amount of returning models to  &lt;int&gt;.
+Limits the amount of returning models to  <int>.
 
 Example:
+
 ```js
 http://yourServer:port/api/yourModelName?limit=5
 ```
@@ -92,6 +86,7 @@ http://yourServer:port/api/yourModelName?limit=5
 Provide a json object which will be used as selection condition (like where clause).
 
 Example:
+
 ```js
 http://yourServer:port/api/yourModelName?criteria={price:{'$gt':25}}
 ```
@@ -101,23 +96,22 @@ http://yourServer:port/api/yourModelName?criteria={price:{'$gt':25}}
 Provide a json object which will be used as projection like sql-where clause).
 
 Example:
+
 ```js
 http://yourServer:port/api/yourModelName?sort={price:'desc'}
 ```
 
-> Please beware of the syntax. The criteria and sort syntax depends an the
-persistance layer / controller / model combination you use. The syntax used hereis the default for mongodb usage.
+> Please beware of the syntax. The criteria and sort syntax depends an the persistance layer / controller / model combination you use. The syntax used hereis the default for mongodb usage.
 
 ### HTTP Verbs
-
-All operations will return http status 200 on success. If there is any error
-we return http status 4XX / 5XX and an error message body with error explanation.
+All operations will return http status 200 on success. If there is any error we return http status 4XX / 5XX and an error message body with error explanation.
 
 #### GET /modelName
 - Criteria, sort, limit and skip parameters can be used
 - Returns an array of available models
 
 Example
+
 ```js
 GET http://server:port/modelName
 
@@ -134,6 +128,7 @@ GET http://server:port/modelName
 - Returns the persisted model object with new id property assigned
 
 Example
+
 ```js
 PUT http://server:port/modelName
 {'name':'test'}
@@ -150,6 +145,7 @@ PUT http://server:port/modelName
 - Returns an empty array on success
 
 Example
+
 ```js
 DELTE http://server:port/modelName
 
@@ -161,6 +157,7 @@ DELTE http://server:port/modelName
 - Returns single model JSON object referenced by the modelId
 
 Example
+
 ```js
 GET http://server:port/modelName/modelId
 
@@ -173,6 +170,7 @@ GET http://server:port/modelName/modelId
 - Returns following json object
 
 Example
+
 ```js
 DELETE http://server:port/modelName/modelId
 
@@ -188,6 +186,7 @@ DELETE http://server:port/modelName/modelId
 - Returns the updated model
 
 Example:
+
 ```js
 POST http://server:port/api/modelName/modelId
 {'name':'test123'}
@@ -200,10 +199,8 @@ POST http://server:port/api/modelName/modelId
 ```
 
 ### Additional usage examples
-
 `GET http://server:port/modelName?skip=10&limit=5`
 - Returns JSON [{<your model>}, {<your model>}, ...]. The first 10 items will be skipped (not part of the result) and only 5 items will be returned. This also depends on the amount of available data. If there are only 3 items in database [] will be returned because of skip parameter which will skip the first 10 items.
-
 
 ### Implement your own model
 Since this implementation is heaviliy influenced by mongoose project (and was intended to be used with mongodb at first time) we use that api as default. But you welcome to implement your own model api where you can delegate the operations to another persistence api. here is the api your model have to implement:
@@ -227,32 +224,30 @@ model
 
   })
 
-// Create new model object and persist model
-new model({data})
- .save(function (err, result) {
+// Create new model object and persist
+model
+  .create({data},function (err, result) {
 
  })
 
 // Update single model data
 model
-  .findByIdAndUpdate(id,
-    {update data},
-    function(err, result) {
+  .findByIdAndUpdate(id,{update data})
+    .exec(function(err, result) {
 
     })
 
 // Remove all models
 model
-  .remove(function(err) {
+  .remove()
+  .exec(function(err) {
 
   })
 
 // Remove single model found by id
-model.findById(id,
-    function (err, result) {
-      result.remove(function (err) {
+model.findByIdAndRemove(id)
+    .exec(function (err, removedDoc) {
 
-      })
     })
 ```
 
