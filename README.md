@@ -158,7 +158,7 @@ PUT http://server:port/modelName?criteria=<JSON>
 
 #### DELETE /model
 - Deletes all available models
-- Returns an empty array on success
+- Returns number of affected entities
 
 Example
 
@@ -166,12 +166,14 @@ Example
 DELETE http://server:port/modelName
 
 // Returns
-[]
+{
+  numberAffected: ...
+}
 ```
 
 #### DELETE /model?criteria=&lt;JSON&gt;
 - Deletes all available models selected by criteria (bulk delete)
-- Returns deleted models
+- Returns number of affected entities
 
 Example
 

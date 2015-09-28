@@ -68,11 +68,11 @@
 
     });
 
-    it(' - should remove all documents by criteria', function(done) {
+    it(' - should remove all documents by criteria with returning numberAffected', function(done) {
 
       var removeAll = supertest(fixtures.app)
         .delete("/api/users")
-        .expect(200, []);
+        .expect(200);
 
       var data1 = us.clone(defaultModelData);
       data1.counter = 1;
@@ -101,7 +101,10 @@
 
       var removeSelected = supertest(fixtures.app)
         .delete("/api/users?criteria=" + JSON.stringify(criteria))
-        .expect(200);
+        .expect(200)
+        .expect({
+          numberAffected:2
+        });
 
 
       var selectRest = supertest(fixtures.app)
