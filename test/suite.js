@@ -107,9 +107,6 @@
         method: "delete",
         json: true
       })
-      .then(function(result) {
-        expect(result).toEqual([]);
-      })
       .then(function() {
         exit(done);
       })

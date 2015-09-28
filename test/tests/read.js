@@ -59,7 +59,7 @@
 
       var deleteAll = supertest(fixtures.app)
         .delete('/api/users')
-        .expect(200, [])
+        .expect(200)
 
       var data1 = us.clone(defaultModelData);
 
