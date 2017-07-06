@@ -26,14 +26,19 @@
     "controller",
     "rest"
   ],
+  "dependencies": {
+    "errors": "^0.3.0",
+    "express": "^4.15.3"
+  },
   "devDependencies": {
     "body-parser": "^1.17.2",
-    "mongoose": "^3.8.40",
+    "mocha": "^3.4.2",
+    "mongoose": "^3.9.7",
     "sinon": "^2.3.6",
     "supertest": "^3.0.0"
   },
   "scripts": {
-    "test": "gulp test",
+    "test": "node ./node_modules/mocha/bin/_mocha test/unit test/scenario",
     "commit": "git add --all && git commit",
     "version": "git add --all",
     "postversion": "git push && git push --tags",
@@ -41,10 +46,5 @@
     "release": "npm version ",
     "postrelease": "npm publish && git checkout dev && git merge master && git push"
   },
-  "preferGlobal": "false",
-  "dependencies": {
-    "errors": "^0.3.0",
-    "express": "^4.15.3",
-    "mongoose": "^3.9.7"
-  }
+  "preferGlobal": "false"
 }

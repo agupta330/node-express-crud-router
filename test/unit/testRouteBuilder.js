@@ -28,7 +28,7 @@ describe(__filename, () => {
                 const mock = sandbox.mock(router);
                 const data = {};
 
-                mock.expects('param').yields(1, {}, {}, () => { }).returns(router);
+                mock.expects('param').yields({}, {}, () => { }, 1).returns(router);
                 mock.expects('route').withExactArgs(path).returns(router);
                 mock.expects('route').withExactArgs(path + '/:id').returns(router);
 
