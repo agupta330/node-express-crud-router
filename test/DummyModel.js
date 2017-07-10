@@ -13,25 +13,53 @@ class DummyModel {
     //     model.exec = () => model;
 
     constructor() {
-        this._storage = [];
-        this._currentData = null;
+        this.reset();
     }
 
-    findByIdAndUpdate(id, updateData, next) {
-        const target = this._storage.find((elem) => {
-            return elem._id === id;
-        });
-        Object.keys(updateData).forEach((key) => {
-            const value = updateData[key];
-            if (key != '_id') {
-                target[key] = value;
-            }
-        });
-        this._currentData = target;
+    reset() {
+        this._storage = [
+            { any: 'data 1', _id: '1' },
+            { any: 'data 2', _id: '2' }
+        ];
+        this._currentData = null;
         return this;
     }
 
-    find() {
+    findByIdAndUpdate(id, updateData, next) {
+        this.findById(id);
+        Object.keys(updateData).forEach((key) => {
+            const value = updateData[key];
+            if (key != '_id') {
+                this._currentData[key] = value;
+            }
+        });
+        return this;
+    }
+
+    findById(id) {
+        this._currentData = this._storage.find((elem) => {
+            return elem._id === id;
+        });
+        return this;
+    }
+
+    find(criteria) {
+        this._currentData = this._storage;
+        return this;
+    }
+
+    skip(skip) {
+        this._skip = skip;
+        return this;
+    }
+
+    limit(limit) {
+        this._limit = limit;
+        return this;
+    }
+
+    sort(sort) {
+        this._sort = sort;
         return this;
     }
 

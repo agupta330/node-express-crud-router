@@ -33,7 +33,6 @@
   "devDependencies": {
     "body-parser": "^1.17.2",
     "mocha": "^3.4.2",
-    "mongoose": "^3.9.7",
     "sinon": "^2.3.6",
     "supertest": "^3.0.0"
   },
